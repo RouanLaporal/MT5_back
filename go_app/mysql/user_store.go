@@ -18,7 +18,7 @@ type UserStore struct {
 
 func (s *UserStore) GetUserByEmail(email string) (structure.User, error) {
 	var user structure.User
-	err := s.QueryRow("SELECT * FROM users WHERE email = $1", email).Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.Password)
+	err := s.QueryRow("SELECT * FROM users WHERE email = $1", email).Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.Password, &user.Role)
 	if err != nil {
 		return user, err
 	}
@@ -30,7 +30,7 @@ func (s *UserStore) AddUser(item structure.User) (int, error) {
 	hashPassword, _ := helper.HashPassword(item.Password)
 
 	item.Password = hashPassword
-	err := s.QueryRow("INSERT INTO users (name, phone, email, password) VALUES ($1, $2, $3, $4) RETURNING id", item.Name, item.Phone, item.Email, item.Password).Scan(&id)
+	err := s.QueryRow("INSERT INTO users (name, phone, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id", item.Name, item.Phone, item.Email, item.Password, item.Role).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
