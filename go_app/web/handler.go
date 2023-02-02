@@ -16,6 +16,7 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Use(middleware.Logger)
 
 	handler.Post("/login", handler.SignIn())
+	handler.Post("/register", handler.SignUp())
 
 	return handler
 }
