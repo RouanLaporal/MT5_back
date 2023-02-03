@@ -1,11 +1,12 @@
 package structure
 
 type User struct {
-	ID       int    `json:"id"`
+	ID       int    `json:"id_user"`
 	Name     string `json:"name"`
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 type UserStoreInterface interface {
@@ -13,4 +14,38 @@ type UserStoreInterface interface {
 	AddUser(item User) (int, error)
 	DeleteUser(id int) error
 	// UpdateUser(id int) error // TODO : update user
+}
+
+type Token struct {
+	Role        string `json:"role"`
+	Email       string `json:"email"`
+	TokenString string `json:"token"`
+}
+
+type Authentication struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type Shop struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	ZipCode     string `json:"zip"`
+	City        string `json:"city"`
+	Lat         string `json:"lat"`
+	Long        string `json:"long"`
+	Country     string `json:"country"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
+	Description string `json:"description"`
+	KindID      string `json:"kind_id"`
+	UserID      int    `json:"user_id"`
+}
+
+type ShopStoreInterface interface {
+	GetAllShopByKindAndPosition(id_type int) ([]Shop, error)
+	GetAllShopByKindAndCity(id int, city string) ([]Shop, error)
+	AddShop(item Shop) (int, error)
+	// DeleteShop(id int) error
+	// UpdateShop(id int) error
 }

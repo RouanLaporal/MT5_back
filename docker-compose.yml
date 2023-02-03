@@ -12,10 +12,34 @@ services:
       # Ajouter le DDL qui va tourner en dernier
       - ./database/ddl/ddl.sql:/docker-entrypoint-initdb.d/999-ddl.sql
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-}
-      MARIADB_DATABASE: ${MARIADB_DATABASE:-MT5_back_project}
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_DATABASE: MT5_back_project
+      MARIADB_USER: louis
+      MARIADB_PASSWORD: louis_password
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MARIADB_ROOT_PASSWORD" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  go-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+        MARIADB_ROOT_PASSWORD: password
+        MARIADB_DATABASE: MT5_back_project
+        MARIADB_USER: louis
+        MARIADB_PASSWORD: louis_password
+    ports:
+        - "8097:8097"
+    depends_on:
+        database:
+            condition: service_healthy
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"

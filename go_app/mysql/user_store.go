@@ -18,28 +18,36 @@ type UserStore struct {
 
 func (s *UserStore) GetUserByEmail(email string) (structure.User, error) {
 	var user structure.User
-	err := s.QueryRow("SELECT * FROM users WHERE email = $1", email).Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.Password)
-	if err != nil {
+	rows := s.DB.QueryRow("SELECT id_user, name, phone, email, password, role FROM users WHERE email = ?", email)
+	switch err := rows.Scan(&user.ID, &user.Name, &user.Phone, &user.Email, &user.Password, &user.Role); err {
+	case sql.ErrNoRows:
+		return user, err
+	case nil:
+		return user, nil
+	default:
 		return user, err
 	}
-	return user, nil
 }
 
 func (s *UserStore) AddUser(item structure.User) (int, error) {
-	var id int
 	hashPassword, _ := helper.HashPassword(item.Password)
 
 	item.Password = hashPassword
-	err := s.QueryRow("INSERT INTO users (name, phone, email, password) VALUES ($1, $2, $3, $4) RETURNING id", item.Name, item.Phone, item.Email, item.Password).Scan(&id)
+	res, err := s.DB.Exec("INSERT INTO users (name, phone, email, password, role) VALUES (?, ?, ?, ?, ?)", item.Name, item.Phone, item.Email, item.Password, item.Role)
 	if err != nil {
 		return 0, err
 	}
 
-	return id, nil
+	id, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
 }
 
 func (s *UserStore) DeleteUser(id int) error {
-	_, err := s.Exec("DELETE FROM users WHERE id = $1", id)
+	_, err := s.DB.Exec("DELETE FROM users WHERE id_user = ?", id)
 	if err != nil {
 		return err
 	}
