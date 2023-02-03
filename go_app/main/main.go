@@ -16,7 +16,7 @@ func main() {
 		User:                 "root",
 		Passwd:               "password",
 		Net:                  "tcp",
-		Addr:                 "docker.for.mac.localhost:3306",
+		Addr:                 "database:3306",
 		DBName:               "MT5_back_project",
 		AllowNativePasswords: true, // Il faut le préciser
 	}

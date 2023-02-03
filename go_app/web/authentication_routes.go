@@ -5,6 +5,9 @@ import (
 	"back_project/structure"
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func (h *Handler) SignIn() http.HandlerFunc {
@@ -69,6 +72,27 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			Status:  "success",
 			Message: "Nouveau user inséré avec succès",
 			NewUser: id,
+		})
+	}
+}
+
+func (h *Handler) DeleteUser() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+		err := h.Store.UserStoreInterface.DeleteUser(id)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(writer).Encode(struct {
+			Status  string `json:"status"`
+			Message string `json:"message"`
+		}{
+			Status:  "success",
+			Message: "User supprimé avec succès",
 		})
 	}
 }

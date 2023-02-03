@@ -18,6 +18,8 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Post("/login", handler.SignIn())
 	handler.Post("/register", handler.SignUp())
 
+	// handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+
 	return handler
 }
 

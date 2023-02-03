@@ -14,7 +14,7 @@ func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 
 		if request.Header["Token"] == nil {
 			http.Error(writer, "No Token Found", http.StatusUnauthorized)
-			json.NewEncoder(writer).Encode("No Token Found")
+			json.NewEncoder(writer).Encode("")
 			return
 		}
 

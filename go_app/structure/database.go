@@ -27,7 +27,25 @@ type Authentication struct {
 	Password string `json:"password"`
 }
 
-type AuthenticationStoreInterface interface {
-	SignIn(email string) (Authentication, error)
-	// SignUp(item User) (int, error)
+type Shop struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	ZipCode     string `json:"zip"`
+	City        string `json:"city"`
+	Lat         string `json:"lat"`
+	Long        string `json:"long"`
+	Country     string `json:"country"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
+	Description string `json:"description"`
+	KindID      string `json:"kind_id"`
+	UserID      int    `json:"user_id"`
+}
+
+type ShopStoreInterface interface {
+	GetAllShopByKindAndPosition(id_type int) ([]Shop, error)
+	GetAllShopByKindAndCity(id int, city string) ([]Shop, error)
+	AddShop(item Shop) (int, error)
+	// DeleteShop(id int) error
+	// UpdateShop(id int) error
 }

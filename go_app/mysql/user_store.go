@@ -47,7 +47,7 @@ func (s *UserStore) AddUser(item structure.User) (int, error) {
 }
 
 func (s *UserStore) DeleteUser(id int) error {
-	_, err := s.Exec("DELETE FROM users WHERE id = ?", id)
+	_, err := s.DB.Exec("DELETE FROM users WHERE id_user = ?", id)
 	if err != nil {
 		return err
 	}
