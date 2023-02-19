@@ -76,3 +76,11 @@ func (shop_store *ShopStore) GetAllShopByKindAndCity(id_kind int, city string) (
 
 	return shops, nil
 }
+
+func (shop_store *ShopStore) DeleteShop(id_shop int) error {
+	_, err := shop_store.DB.Exec("DELETE FROM shops WHERE id_shop = ?", id_shop)
+	if err != nil {
+		return err
+	}
+	return nil
+}

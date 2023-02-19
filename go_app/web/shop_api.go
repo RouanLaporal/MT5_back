@@ -51,3 +51,25 @@ func (handler *Handler) GetAllShopByKindAndCity() http.HandlerFunc {
 		}
 	}
 }
+
+func (handler *Handler) DeleteShop() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+		writer.Header().Set("Content-Type", "application/json")
+		err := handler.Store.ShopStoreInterface.DeleteShop(id)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(writer).Encode(struct {
+			Status  string `json:"status"`
+			Message string `json:"message"`
+		}{
+			Status:  "success",
+			Message: "Boutique supprimé avec succès",
+		})
+	}
+}
