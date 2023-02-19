@@ -23,20 +23,28 @@ CREATE TABLE IF NOT EXISTS Token {
 };
 
 -- Table: Etablissement
-CREATE TABLE IF NOT EXISTS Shop (
-    id_shop INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS shops (
+    id_shop INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
-    phone VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    latitude VARCHAR(255) NOT NULL,
+    longitude VARCHAR(255) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    zip_code VARCHAR(255) NOT NULL,
+    phone VARCHAR(25) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     id_kind INT NOT NULL,
+    id_user INT NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(id_kind) REFERENCES kind(id_kind) on delete cascade on update cascade
+    PRIMARY KEY (id_shop),
+    FOREIGN KEY (id_kind) REFERENCES kind(id_kind),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 
 -- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS Kind (
+CREATE TABLE IF NOT EXISTS Kinds (
     id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

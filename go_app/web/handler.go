@@ -16,10 +16,16 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Use(middleware.Logger)
 
 	/* Authentification route */
+
 	handler.Post("/login", handler.SignIn())
 	handler.Post("/register", handler.SignUp())
 
 	handler.Get("/get-kind", handler.GetKind())
+
+	/* Shop toute */
+
+	handler.Post("/new-shop", handler.AddShop())
+	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
 
 	// handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 
