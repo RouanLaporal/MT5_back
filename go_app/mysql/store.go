@@ -8,6 +8,7 @@ import (
 func CreateStore(db *sql.DB) *Store {
 	return &Store{
 		NewUserStore(db),
+		NewKindStore(db),
 		// NewShopStore(db),
 		// NewOpeningHoursStore(db),
 		// NewBenefitStore(db),
@@ -18,6 +19,7 @@ func CreateStore(db *sql.DB) *Store {
 
 type Store struct {
 	structure.UserStoreInterface
+	structure.KindStoreInterface
 	// structure.ShopStoreInterface
 	// structure.OpeningHoursStoreInterface
 	// structure.BenefitStoreInterface
