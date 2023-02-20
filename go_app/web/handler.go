@@ -26,6 +26,7 @@ func NewHandler(store *database.Store) *Handler {
 
 	handler.Post("/new-shop", handler.AddShop())
 	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
+	handler.Get("/get-shop-by-user/{id_user}", handler.GetAllShopByUser())
 	handler.Delete("/shop/{id}", handler.DeleteShop())
 	handler.Patch("/shop/{id}", handler.UpdateShop())
 

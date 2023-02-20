@@ -98,3 +98,20 @@ func (handler *Handler) UpdateShop() http.HandlerFunc {
 
 	}
 }
+
+func (handler *Handler) GetAllShopByUser() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id_user")
+		id, _ := strconv.Atoi(QueryId)
+		writer.Header().Set("Content-Type", "application/json")
+		shops, err := handler.Store.GetAllShopByUser(id)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		}
+		err = json.NewEncoder(writer).Encode(shops)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
