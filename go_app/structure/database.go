@@ -54,7 +54,7 @@ type KindStoreInterface interface {
 type ShopStoreInterface interface {
 	// GetAllShopByKindAndPosition(id_type int) ([]Shop, error)
 	GetAllShopByKindAndCity(id_kind int, city string) ([]Shop, error)
-	AddShop(item Shop) (int, error)
+	AddShop(shop Shop) (int, error)
 	DeleteShop(id int) error
-	// UpdateShop(id int) error
+	UpdateShop(id int, item Shop) error
 }

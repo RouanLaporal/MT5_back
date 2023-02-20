@@ -84,3 +84,38 @@ func (shop_store *ShopStore) DeleteShop(id_shop int) error {
 	}
 	return nil
 }
+
+func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop) error {
+	sqlStatement := `UPDATE shops SET 
+	name = ?,
+	zip_code = ?,
+	city = ?,
+	latitude = ?,
+	longitude = ?,
+	country = ?,
+	phone = ?,
+	email = ?,
+	description = ?, 
+	id_kind = ?, 
+	id_user = ?
+	WHERE id_shop = ?`
+
+	_, err := shop_store.DB.Exec(sqlStatement,
+		updated_shop.Name,
+		updated_shop.ZipCode,
+		updated_shop.City,
+		updated_shop.Lat,
+		updated_shop.Long,
+		updated_shop.Country,
+		updated_shop.Phone,
+		updated_shop.Email,
+		updated_shop.Description,
+		updated_shop.KindID,
+		updated_shop.UserID,
+		id_shop,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
