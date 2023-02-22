@@ -76,15 +76,15 @@ CREATE TABLE IF NOT EXISTS Benefit (
 );
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
-CREATE TABLE IF NOT EXISTS Collaborator (
-    id_collaborator SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS collaborators (
+    id_collaborator INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    FOREIGN KEY(id_shop) REFERENCES shops(id_shop)
 );
 
 -- Table: Avis
