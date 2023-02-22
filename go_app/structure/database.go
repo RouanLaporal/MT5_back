@@ -38,8 +38,8 @@ type Shop struct {
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
 	Description string `json:"description"`
-	KindID      string `json:"kind_id"`
-	UserID      int    `json:"user_id"`
+	KindID      string `json:"id_kind"`
+	UserID      int    `json:"id_user"`
 }
 
 type Kind struct {
