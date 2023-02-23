@@ -10,6 +10,7 @@ func CreateStore(db *sql.DB) *Store {
 		NewUserStore(db),
 		NewKindStore(db),
 		NewShopStore(db),
+		NewCollaboratorStore(db),
 		// NewOpeningHoursStore(db),
 		// NewBenefitStore(db),
 		// NewReviewStore(db),
@@ -21,6 +22,7 @@ type Store struct {
 	structure.UserStoreInterface
 	structure.KindStoreInterface
 	structure.ShopStoreInterface
+	structure.CollaboratorStoreInterface
 	// structure.OpeningHoursStoreInterface
 	// structure.BenefitStoreInterface
 	// structure.ReviewStoreInterface
