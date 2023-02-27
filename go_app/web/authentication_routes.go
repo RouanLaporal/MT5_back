@@ -110,13 +110,7 @@ func (h *Handler) DeleteUser() http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "User supprimé avec succès",
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }
 
@@ -134,12 +128,6 @@ func (h *Handler) UpdateUser() http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "User modifié avec succès",
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }
