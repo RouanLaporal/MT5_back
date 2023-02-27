@@ -35,6 +35,7 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Patch("/collaborator/{id}", handler.UpdateCollaborator())
 	handler.Delete("/collaborator/{id}", handler.DeleteCollaborator())
 
+	handler.Post("/opening-hours", handler.AddOpeningHours())
 	// handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 
 	return handler

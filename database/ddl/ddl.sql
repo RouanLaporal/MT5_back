@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS shops (
 );
 
 -- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS Kinds (
+CREATE TABLE IF NOT EXISTS kinds (
     id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -52,14 +52,15 @@ CREATE TABLE IF NOT EXISTS Kinds (
 );
 
 -- Table: Horaires d'ouverture
-CREATE TABLE IF NOT EXISTS OpeningHours (
-    id_day SERIAL PRIMARY KEY NOT NULL,
+CREATE TABLE IF NOT EXISTS openingHours (
+    id INT PRIMARY KEY NOT NULL,
+    day INT NOT NULL,
     id_shop INTEGER NOT NULL,
     open VARCHAR(255) NOT NULL,
     close VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop)
 );
 
 -- Table: Prestation
