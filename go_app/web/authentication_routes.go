@@ -90,13 +90,9 @@ func (h *Handler) SignUp() http.HandlerFunc {
 		authenticationUser.TokenString = validToken
 
 		json.NewEncoder(writer).Encode(struct {
-			Status  string             `json:"status"`
-			Message string             `json:"message"`
 			NewUser int                `json:"newUser"`
 			Data    structure.AuthUser `json:"data"`
 		}{
-			Status:  "success",
-			Message: "Nouveau user inséré avec succès",
 			NewUser: id,
 			Data:    authenticationUser,
 		})
