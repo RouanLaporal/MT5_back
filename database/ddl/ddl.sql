@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Token {
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_token),
-    FOREIGN KEY (id_user) REFERENCES User(id_user)
+    FOREIGN KEY (id_user) REFERENCES User(id_user) on delete cascade on update cascade
 };
 
 -- Table: Etablissement
@@ -50,20 +50,7 @@ CREATE TABLE IF NOT EXISTS kinds (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
---Table: Day
-CREATE TABLE IF NOT EXISTS days(
-    id_day INT PRIMARY KEY NOT NULL,
-    day VARCHAR(255) NOT NULL
-);
 
-INSERT INTO days (id_day, day) VALUES 
-    (0, 'Dimanche'),
-    (1, 'Lundi'),
-    (2, 'Mardi'),
-    (3, 'Mercredi'),
-    (4, 'Jeudi'),
-    (5, 'Vendredi'),
-    (6, 'Samedi');
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS openingHours (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -73,8 +60,7 @@ CREATE TABLE IF NOT EXISTS openingHours (
     close VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES shops(id_shop),
-    FOREIGN KEY (id_day) REFERENCES days(id_day)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) on delete cascade on update cascade
 );
 
 -- Table: Prestation

@@ -11,7 +11,7 @@ type OpeningHours struct {
 type ShowOpening struct {
 	Open  string `json:"open"`
 	Close string `json:"close"`
-	Day   string `json:"day"`
+	DayID string `json:"day"`
 }
 
 type OpeningHoursStoreInterface interface {

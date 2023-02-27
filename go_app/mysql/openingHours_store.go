@@ -34,10 +34,10 @@ func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours st
 	return int(id), nil
 }
 
-func (openinHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) (structure.ShowOpening, error) {
-	var show_opening structure.ShowOpening
-	rows := openinHours_store.DB.QueryRow("SELECT open, close, day FROM openingHours INNER JOIN days ON openingHours.id_day = days.id_day WHERE id_shop = ?", id_shop)
-	switch err := rows.Scan(&show_opening.Open, &show_opening.Close, &show_opening.Day); err {
+func (openinHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) (structure.OpeningHours, error) {
+	var show_opening structure.OpeningHours
+	rows := openinHours_store.DB.QueryRow("SELECT open, close, id_day FROM openingHours WHERE id_shop = ?", id_shop)
+	switch err := rows.Scan(&show_opening.Open, &show_opening.Close, &show_opening.DayID); err {
 	case sql.ErrNoRows:
 		return show_opening, err
 	case nil:
