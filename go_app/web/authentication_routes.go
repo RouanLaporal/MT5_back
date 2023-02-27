@@ -59,7 +59,7 @@ func (h *Handler) SignUp() http.HandlerFunc {
 		user := structure.User{}
 		json.NewDecoder(request.Body).Decode(&user)
 
-		auth, err := h.Store.UserStoreInterface.GetUserByEmail(user.Email)
+		_, err := h.Store.UserStoreInterface.GetUserByEmail(user.Email)
 		if err == nil {
 			http.Error(writer, "Email already in use", http.StatusBadRequest)
 			return
@@ -71,13 +71,24 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		validToken, err := helper.GenerateJWT(user.Email, user.Role)
+		if err != nil {
+			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
+			writer.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(writer).Encode(err)
+			return
+		}
+
 		var authenticationUser structure.AuthUser
 
-		authenticationUser.FirstName = auth.FirstName
-		authenticationUser.LastName = auth.LastName
-		authenticationUser.Email = auth.Email
-		authenticationUser.Phone = auth.Phone
-		authenticationUser.Role = auth.Role
+		authenticationUser.FirstName = user.FirstName
+		authenticationUser.LastName = user.LastName
+		authenticationUser.Email = user.Email
+		authenticationUser.Phone = user.Phone
+		authenticationUser.Role = user.Role
+		authenticationUser.TokenString = validToken
+
 		json.NewEncoder(writer).Encode(struct {
 			Status      string             `json:"status"`
 			Message     string             `json:"message"`
