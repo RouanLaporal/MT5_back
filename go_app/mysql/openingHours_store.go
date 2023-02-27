@@ -47,17 +47,16 @@ func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) 
 	}
 }
 
-func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id_shop int, id_day int, updated_openingHours structure.OpeningHours) error {
+func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id int, updated_openingHours structure.OpeningHours) error {
 	sqlStatement := `UPDATE openingHours SET 
 	open = ?,
 	close = ?,
-	WHERE id_shop = ? AND id_day = ?`
+	WHERE id = ?`
 
 	_, err := openingHours_store.DB.Exec(sqlStatement,
 		updated_openingHours.Open,
 		updated_openingHours.Close,
-		id_shop,
-		id_day,
+		id,
 	)
 	if err != nil {
 		return err
