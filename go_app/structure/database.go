@@ -1,20 +1,29 @@
 package structure
 
 type User struct {
-	ID       int    `json:"id_user"`
-	Name     string `json:"name"`
-	Phone    string `json:"phone"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
+	ID        int    `json:"id_user"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Role      string `json:"role"`
 }
 
 type UserStoreInterface interface {
 	GetUserByEmail(email string) (User, error)
 	AddUser(item User) (int, error)
 	DeleteUser(id int) error
-	// UpdateUser(id int) error // TODO : update user
-	//TODO route check mdp and update mdp
+	UpdateUser(id int, user User) error
+}
+
+type AuthUser struct {
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	Phone       string `json:"phone"`
+	Role        string `json:"role"`
+	TokenString string `json:"token"`
 }
 
 type Token struct {

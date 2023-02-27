@@ -3,6 +3,8 @@ package web
 import (
 	database "back_project/mysql"
 
+	middlewareCustom "back_project/middleware"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -34,7 +36,7 @@ func NewHandler(store *database.Store) *Handler {
 
 	handler.Get("/get-kind", handler.GetKind())
 
-	/* Shop toute */
+	/* Shop route */
 
 	handler.Post("/new-shop", handler.AddShop())
 	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
@@ -50,6 +52,9 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Post("/opening-hours", handler.AddOpeningHours())
 	handler.Get("/opening-hours/{id_shop}", handler.GetOpeningHoursByShop())
 	// handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+	/* User route */
+	handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+	handler.Patch("/user/update/{id}", handler.UpdateUser()) //modify for authorization
 
 	return handler
 }
