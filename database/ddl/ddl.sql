@@ -50,17 +50,31 @@ CREATE TABLE IF NOT EXISTS kinds (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+--Table: Day
+CREATE TABLE IF NOT EXISTS days(
+    id_day INT PRIMARY KEY NOT NULL,
+    day VARCHAR(255) NOT NULL
+);
 
+INSERT INTO days (id_day, day) VALUES 
+    (0, 'Dimanche'),
+    (1, 'Lundi'),
+    (2, 'Mardi'),
+    (3, 'Mercredi'),
+    (4, 'Jeudi'),
+    (5, 'Vendredi'),
+    (6, 'Samedi');
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS openingHours (
-    id INT PRIMARY KEY NOT NULL,
-    day INT NOT NULL,
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_day INTEGER NOT NULL,
     id_shop INTEGER NOT NULL,
     open VARCHAR(255) NOT NULL,
     close VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES shops(id_shop)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop),
+    FOREIGN KEY (id_day) REFERENCES days(id_day)
 );
 
 -- Table: Prestation

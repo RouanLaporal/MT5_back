@@ -17,8 +17,8 @@ type OpeningHoursStore struct {
 
 func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours structure.OpeningHours) (int, error) {
 	res, err := openingHours_store.DB.Exec(
-		"INSERT INTO openingHours (day, id_shop, open, close) VALUES (?, ?, ?, ?)",
-		new_openingHours.Day,
+		"INSERT INTO openingHours (id_day, id_shop, open, close) VALUES (?, ?, ?, ?)",
+		new_openingHours.DayID,
 		new_openingHours.ShopID,
 		new_openingHours.Open,
 		new_openingHours.Close)
@@ -32,4 +32,17 @@ func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours st
 	}
 
 	return int(id), nil
+}
+
+func (openinHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) (structure.ShowOpening, error) {
+	var show_opening structure.ShowOpening
+	rows := openinHours_store.DB.QueryRow("SELECT open, close, day FROM openingHours INNER JOIN days ON openingHours.id_day = days.id_day WHERE id_shop = ?", id_shop)
+	switch err := rows.Scan(&show_opening.Open, &show_opening.Close, &show_opening.Day); err {
+	case sql.ErrNoRows:
+		return show_opening, err
+	case nil:
+		return show_opening, nil
+	default:
+		return show_opening, err
+	}
 }
