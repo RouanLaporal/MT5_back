@@ -1,7 +1,8 @@
 -- Table: Utilisateur
 CREATE TABLE IF NOT EXISTS users (
     id_user INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     phone VARCHAR(25) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -53,7 +54,7 @@ CREATE TABLE IF NOT EXISTS Kinds (
 
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS OpeningHours (
-    id_day SERIAL PRIMARY KEY NOT NULL,
+    id_day INTEGER PRIMARY KEY NOT NULL,
     id_shop INTEGER NOT NULL,
     open VARCHAR(255) NOT NULL,
     close VARCHAR(255) NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS OpeningHours (
 
 -- Table: Prestation
 CREATE TABLE IF NOT EXISTS Benefit (
-    id_benefit SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_benefit INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Benefit (
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
 CREATE TABLE IF NOT EXISTS Collaborator (
-    id_collaborator SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_collaborator INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(255) NOT NULL,
@@ -89,7 +90,7 @@ CREATE TABLE IF NOT EXISTS Collaborator (
 
 -- Table: Avis
 CREATE TABLE IF NOT EXISTS Review (
-    id_review SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_review INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
     rating INTEGER NOT NULL,
@@ -102,7 +103,7 @@ CREATE TABLE IF NOT EXISTS Review (
 
 -- Table: Réservation
 CREATE TABLE IF NOT EXISTS Reservation (
-    id_reservation SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_reservation INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
     id_benefit INTEGER NOT NULL,
