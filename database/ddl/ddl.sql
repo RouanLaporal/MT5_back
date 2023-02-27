@@ -1,7 +1,8 @@
 -- Table: Utilisateur
 CREATE TABLE IF NOT EXISTS users (
-    id_user INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    id_user INTEGER NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     phone VARCHAR(25) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -12,15 +13,15 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Table: Token
--- CREATE TABLE IF NOT EXISTS Token {
---     id_token INTEGER NOT NULL AUTO_INCREMENT,
---     id_user INTEGER NOT NULL,
---     token VARCHAR(255) NOT NULL,
---     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---     PRIMARY KEY (id_token),
---     FOREIGN KEY (id_user) REFERENCES User(id_user)
--- };
+CREATE TABLE IF NOT EXISTS Token {
+    id_token INTEGER NOT NULL AUTO_INCREMENT,
+    id_user INTEGER NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_token),
+    FOREIGN KEY (id_user) REFERENCES User(id_user)
+};
 
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
@@ -39,22 +40,21 @@ CREATE TABLE IF NOT EXISTS shops (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_shop),
-    FOREIGN KEY (id_kind) REFERENCES kinds(id_kind),
+    FOREIGN KEY (id_kind) REFERENCES kind(id_kind),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 
 -- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS kinds (
-    id_kind INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Kinds (
+    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_kind)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS OpeningHours (
-    id_day SERIAL PRIMARY KEY NOT NULL,
+    id_day INTEGER PRIMARY KEY NOT NULL,
     id_shop INTEGER NOT NULL,
     open VARCHAR(255) NOT NULL,
     close VARCHAR(255) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS OpeningHours (
 
 -- Table: Prestation
 CREATE TABLE IF NOT EXISTS Benefit (
-    id_benefit SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_benefit INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Benefit (
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
 CREATE TABLE IF NOT EXISTS Collaborator (
-    id_collaborator SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_collaborator INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(255) NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS Collaborator (
 
 -- Table: Avis
 CREATE TABLE IF NOT EXISTS Review (
-    id_review SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_review INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
     rating INTEGER NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS Review (
 
 -- Table: Réservation
 CREATE TABLE IF NOT EXISTS Reservation (
-    id_reservation SERIAL PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_reservation INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
     id_benefit INTEGER NOT NULL,

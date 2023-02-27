@@ -38,11 +38,19 @@ func (h *Handler) SignIn() http.HandlerFunc {
 		}
 
 		var token structure.Token
+		var authenticationUser structure.AuthUser
+
 		token.Email = auth.Email
 		token.Role = auth.Role
 		token.TokenString = validToken
+		authenticationUser.FirstName = auth.FirstName
+		authenticationUser.LastName = auth.LastName
+		authenticationUser.Email = auth.Email
+		authenticationUser.Phone = auth.Phone
+		authenticationUser.Role = auth.Role
+		authenticationUser.TokenString = validToken
 		writer.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(writer).Encode(token)
+		json.NewEncoder(writer).Encode(authenticationUser)
 	}
 }
 
@@ -93,6 +101,30 @@ func (h *Handler) DeleteUser() http.HandlerFunc {
 		}{
 			Status:  "success",
 			Message: "User supprimé avec succès",
+		})
+	}
+}
+
+func (h *Handler) UpdateUser() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id_user, _ := strconv.Atoi(QueryId)
+		user := structure.User{}
+		json.NewDecoder(request.Body).Decode(&user)
+		writer.Header().Set("Content-Type", "application/json")
+		err := h.Store.UserStoreInterface.UpdateUser(id_user, user)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(writer).Encode(struct {
+			Status  string `json:"status"`
+			Message string `json:"message"`
+		}{
+			Status:  "success",
+			Message: "User modifié avec succès",
 		})
 	}
 }
