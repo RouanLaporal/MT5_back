@@ -8,3 +8,5 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	golang.org/x/crypto v0.5.0
 )
+
+require github.com/go-chi/cors v1.2.1
