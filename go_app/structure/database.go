@@ -2,8 +2,8 @@ package structure
 
 type User struct {
 	ID        int    `json:"id_user"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 	Phone     string `json:"phone"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
@@ -18,8 +18,8 @@ type UserStoreInterface interface {
 }
 
 type AuthUser struct {
-	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"`
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
 	Email       string `json:"email"`
 	Phone       string `json:"phone"`
 	Role        string `json:"role"`

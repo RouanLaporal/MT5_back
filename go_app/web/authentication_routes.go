@@ -59,7 +59,7 @@ func (h *Handler) SignUp() http.HandlerFunc {
 		user := structure.User{}
 		json.NewDecoder(request.Body).Decode(&user)
 
-		_, err := h.Store.UserStoreInterface.GetUserByEmail(user.Email)
+		auth, err := h.Store.UserStoreInterface.GetUserByEmail(user.Email)
 		if err == nil {
 			http.Error(writer, "Email already in use", http.StatusBadRequest)
 			return
@@ -71,15 +71,23 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		var authenticationUser structure.AuthUser
 
+		authenticationUser.FirstName = auth.FirstName
+		authenticationUser.LastName = auth.LastName
+		authenticationUser.Email = auth.Email
+		authenticationUser.Phone = auth.Phone
+		authenticationUser.Role = auth.Role
 		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-			NewUser int    `json:"newUser"`
+			Status      string             `json:"status"`
+			Message     string             `json:"message"`
+			NewUser     int                `json:"newUser"`
+			UserDetails structure.AuthUser `json:"userDetails"`
 		}{
-			Status:  "success",
-			Message: "Nouveau user inséré avec succès",
-			NewUser: id,
+			Status:      "success",
+			Message:     "Nouveau user inséré avec succès",
+			NewUser:     id,
+			UserDetails: authenticationUser,
 		})
 	}
 }
