@@ -54,7 +54,10 @@ func (s *UserStore) DeleteUser(id int) error {
 	return nil
 }
 
-func (s *UserStore) UpdateUser(id_user int, updateUser structure.User) error { //TODO encrypter le mdp
+func (s *UserStore) UpdateUser(id_user int, updateUser structure.User) error {
+	hashPassword, _ := helper.HashPassword(updateUser.Password)
+	updateUser.Password = hashPassword
+
 	sqlStatement := ` UPDATE users SET 
 		first_name = ?,
 		last_name = ?, 
