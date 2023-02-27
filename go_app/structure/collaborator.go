@@ -11,6 +11,6 @@ type Collaborator struct {
 type CollaboratorStoreInterface interface {
 	GetCollaboratorByShop(id_shop int) ([]Collaborator, error)
 	AddCollaborator(collaborator Collaborator) (int, error)
-	// DeleteCollaborator(id int) error
-	// UpdateCollaborator(id int) error // TODO : update user
+	DeleteCollaborator(id_collaborator int) error
+	UpdateCollaborator(id_collaborator int, updated_collaborator Collaborator) error
 }

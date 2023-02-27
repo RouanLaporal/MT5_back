@@ -14,6 +14,7 @@ type UserStoreInterface interface {
 	AddUser(item User) (int, error)
 	DeleteUser(id int) error
 	// UpdateUser(id int) error // TODO : update user
+	//TODO route check mdp and update mdp
 }
 
 type Token struct {

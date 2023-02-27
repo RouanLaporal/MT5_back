@@ -62,5 +62,31 @@ func (collaborator_store CollaboratorStore) AddCollaborator(new_collaborator str
 	return int(id), nil
 }
 
-// func DeleteCollaborator(id int) error                        {}
-// func UpdateCollaborator(id int) error                        {} // TODO : update user
+func (collaborator_store CollaboratorStore) DeleteCollaborator(id_collaborator int) error {
+	_, err := collaborator_store.DB.Exec("DELETE FROM collaborators WHERE id_collaborator = ?", id_collaborator)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (collaborator_store *CollaboratorStore) UpdateCollaborator(id_collaborator int, updated_collaborator structure.Collaborator) error {
+	sqlStatement := `UPDATE collaborators SET 
+		id_shop = ?,
+		name = ?,
+		phone = ?,
+		email = ?
+		WHERE id_collaborator = ?`
+
+	_, err := collaborator_store.DB.Exec(sqlStatement,
+		updated_collaborator.ShopID,
+		updated_collaborator.Name,
+		updated_collaborator.Phone,
+		updated_collaborator.Email,
+		id_collaborator,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
