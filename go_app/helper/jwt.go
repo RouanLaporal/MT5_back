@@ -9,12 +9,13 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateJWT(email, role string) (string, error) {
+func GenerateJWT(id int, email, role string) (string, error) {
 	var mySigningKey = []byte(os.Getenv("JWT_SECRET"))
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["authorized"] = true
+	claims["id"] = id
 	claims["email"] = email
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()

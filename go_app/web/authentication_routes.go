@@ -29,7 +29,7 @@ func (h *Handler) SignIn() http.HandlerFunc {
 			return
 		}
 
-		validToken, err := helper.GenerateJWT(auth.Email, auth.Role)
+		validToken, err := helper.GenerateJWT(auth.ID, auth.Email, auth.Role)
 		if err != nil {
 			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
 			writer.Header().Set("Content-Type", "application/json")
@@ -72,7 +72,7 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			return
 		}
 
-		validToken, err := helper.GenerateJWT(user.Email, user.Role)
+		validToken, err := helper.GenerateJWT(user.ID, user.Email, user.Role)
 		if err != nil {
 			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
 			writer.Header().Set("Content-Type", "application/json")
