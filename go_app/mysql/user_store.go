@@ -49,19 +49,15 @@ func (s *UserStore) DeleteUser(id int) error {
 	return nil
 }
 
-func (s *UserStore) UpdateUser(id_user int, updateUser structure.User) error {
-	hashPassword, _ := helper.HashPassword(updateUser.Password)
-	updateUser.Password = hashPassword
-
+func (s *UserStore) UpdateUser(id_user int, updateUser structure.UpdateUser) error {
 	sqlStatement := ` UPDATE users SET 
 		first_name = ?,
-		last_name = ?, 
-		phone = ?, 
-		email = ?, 
-		password = ?
+		last_name = ?,
+		phone = ?,
+		email = ?
 	WHERE id_user = ?`
 
-	_, err := s.Exec(sqlStatement, updateUser.FirstName, updateUser.LastName, updateUser.Phone, updateUser.Email, updateUser.Password, id_user)
+	_, err := s.Exec(sqlStatement, updateUser.FirstName, updateUser.LastName, updateUser.Phone, updateUser.Email, id_user)
 	if err != nil {
 		return err
 	}

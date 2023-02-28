@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"back_project/structure"
 	"fmt"
 	"net/http"
 	"os"
@@ -15,7 +16,7 @@ func GenerateJWT(id int, email, role string) (string, error) {
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["authorized"] = true
-	claims["id"] = id
+	claims["id_user"] = id
 	claims["email"] = email
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
@@ -28,7 +29,7 @@ func GenerateJWT(id int, email, role string) (string, error) {
 	return tokenString, nil
 }
 
-func ExtractClaims(_ http.ResponseWriter, request *http.Request) (string, error) {
+func ExtractClaims(_ http.ResponseWriter, request *http.Request) (*structure.Token, error) {
 	if request.Header["Token"] != nil {
 		token, err := jwt.Parse(request.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodHMAC)
@@ -39,15 +40,19 @@ func ExtractClaims(_ http.ResponseWriter, request *http.Request) (string, error)
 		})
 
 		if err != nil {
-			return "Error Parsing Token: ", err
+			return nil, err
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if ok && token.Valid {
-			email := claims["email"].(string)
-			return email, nil
+			var currentToken structure.Token
+			currentToken.Email = claims["email"].(string)
+			currentToken.IDUser = int(claims["id_user"].(float64))
+			currentToken.Role = claims["role"].(string)
+
+			return &currentToken, nil
 		}
 	}
 
-	return "unable to extract claims", nil
+	return nil, fmt.Errorf("unable to extract claims")
 }

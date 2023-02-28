@@ -31,11 +31,10 @@ func NewHandler(store *database.Store) *Handler {
 
 	/* Authentification route */
 
-	handler.Post("/login", handler.SignIn())
-	handler.Post("/register", handler.SignUp())
-	handler.Post("/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
-	handler.Post("/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))
+	handler.Post("/auth/login", handler.SignIn())
+	handler.Post("/auth/register", handler.SignUp())
 
+	/* Kind route */
 	handler.Get("/get-kind", handler.GetKind())
 
 	/* Shop route */
@@ -47,8 +46,10 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Patch("/shop/{id}", handler.UpdateShop())
 
 	/* User route */
-	handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
-	handler.Patch("/user/update/{id}", handler.UpdateUser()) //modify for authorization
+	handler.Post("/user/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
+	handler.Patch("/user/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))
+	handler.Patch("/user/update-profile", middlewareCustom.IsAuthorized(handler.UpdateUser()))
+	handler.Delete("/user/delete-profile", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 
 	return handler
 }

@@ -10,11 +10,18 @@ type User struct {
 	Role      string `json:"role"`
 }
 
+type UpdateUser struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email"`
+}
+
 type UserStoreInterface interface {
 	GetUserByEmail(email string) (User, error)
 	AddUser(item User) error
 	DeleteUser(id int) error
-	UpdateUser(id int, user User) error
+	UpdateUser(id int, user UpdateUser) error
 	UpdatePassword(email string, password string) error
 }
 
@@ -28,6 +35,7 @@ type AuthUser struct {
 }
 
 type Token struct {
+	IDUser      int    `json:"id_user"`
 	Role        string `json:"role"`
 	Email       string `json:"email"`
 	TokenString string `json:"token"`
