@@ -46,7 +46,13 @@ func NewHandler(store *database.Store) *Handler {
 
 	/* User route */
 	handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
-	handler.Patch("/user/update/{id}", handler.UpdateUser()) //modify for authorization
+	handler.Patch("/user/update/{id}", handler.UpdateUser())
+
+	/* Benefit routes */
+	handler.Get("/get-benefit/{id}", handler.GetBenefitByShop())
+	handler.Post("/add-benefit", middlewareCustom.IsAuthorized(handler.AddBenefit()))
+	handler.Patch("/benefit/update/{id}", middlewareCustom.IsAuthorized(handler.UpdateBenefit()))
+	handler.Delete("/benefit/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteBenefit()))
 
 	return handler
 }

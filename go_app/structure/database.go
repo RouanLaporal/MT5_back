@@ -57,6 +57,15 @@ type Kind struct {
 	Name string `json:"name"`
 }
 
+type Benefit struct {
+	IDBenefit   int    `json:"id_benefit"`
+	IDShop      int    `json:"id_shop"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Duration    string `json:"duration"`
+	Price       string `json:"price"`
+}
+
 type KindStoreInterface interface {
 	GetAllKind() (Kind, error)
 }
@@ -68,4 +77,11 @@ type ShopStoreInterface interface {
 	AddShop(shop Shop) (int, error)
 	DeleteShop(id int) error
 	UpdateShop(id int, item Shop) error
+}
+
+type BenefitStoreInterface interface {
+	GetBenefitByShop(id_shop int) ([]Benefit, error)
+	AddBenefit(benefit Benefit) (int, error)
+	UpdateBenefit(id_benefit int, item Benefit) error
+	DeleteBenefit(id_benefit int) error
 }

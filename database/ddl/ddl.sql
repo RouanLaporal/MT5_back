@@ -23,6 +23,14 @@ CREATE TABLE IF NOT EXISTS Token {
     FOREIGN KEY (id_user) REFERENCES User(id_user)
 };
 
+-- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
+CREATE TABLE IF NOT EXISTS kinds (
+    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
     id_shop INT NOT NULL AUTO_INCREMENT,
@@ -40,16 +48,8 @@ CREATE TABLE IF NOT EXISTS shops (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_shop),
-    FOREIGN KEY (id_kind) REFERENCES kind(id_kind),
+    FOREIGN KEY (id_kind) REFERENCES kinds(id_kind),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
-);
-
--- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS Kinds (
-    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table: Horaires d'ouverture
@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS OpeningHours (
 );
 
 -- Table: Prestation
-CREATE TABLE IF NOT EXISTS Benefit (
-    id_benefit INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS benefits (
+    id_benefit INTEGER NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -73,11 +73,12 @@ CREATE TABLE IF NOT EXISTS Benefit (
     price VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    PRIMARY KEY (id_benefit),
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop)
 );
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
-CREATE TABLE IF NOT EXISTS Collaborator (
+CREATE TABLE IF NOT EXISTS collaborator (
     id_collaborator INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
