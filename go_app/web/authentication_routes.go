@@ -65,10 +65,10 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			return
 		}
 
-		id, err := h.Store.UserStoreInterface.AddUser(user)
+		error := h.Store.UserStoreInterface.AddUser(user)
 
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		if error != nil {
+			http.Error(writer, error.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -89,13 +89,8 @@ func (h *Handler) SignUp() http.HandlerFunc {
 		authenticationUser.Role = user.Role
 		authenticationUser.TokenString = validToken
 
-		json.NewEncoder(writer).Encode(struct {
-			NewUser int                `json:"newUser"`
-			Data    structure.AuthUser `json:"data"`
-		}{
-			NewUser: id,
-			Data:    authenticationUser,
-		})
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode(authenticationUser)
 	}
 }
 
@@ -123,6 +118,54 @@ func (h *Handler) UpdateUser() http.HandlerFunc {
 		writer.Header().Set("Content-Type", "application/json")
 		err := h.Store.UserStoreInterface.UpdateUser(id_user, user)
 
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(writer).Encode(true)
+	}
+}
+
+func (h *Handler) VerifyPassword() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		password := structure.Password{}
+		json.NewDecoder(request.Body).Decode(&password)
+		email, err := helper.ExtractClaims(writer, request)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		auth, err := h.Store.UserStoreInterface.GetUserByEmail(email)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		check := helper.CheckPasswordHash(password.Password, auth.Password)
+
+		if !check {
+			json.NewEncoder(writer).Encode(false)
+			return
+		}
+
+		json.NewEncoder(writer).Encode(true)
+	}
+}
+
+func (h *Handler) UpdatePassword() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		password := structure.Password{}
+		json.NewDecoder(request.Body).Decode(&password)
+		email, err := helper.ExtractClaims(writer, request)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = h.Store.UserStoreInterface.UpdatePassword(email, password.Password)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

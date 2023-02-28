@@ -33,6 +33,8 @@ func NewHandler(store *database.Store) *Handler {
 
 	handler.Post("/login", handler.SignIn())
 	handler.Post("/register", handler.SignUp())
+	handler.Post("/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
+	handler.Post("/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))
 
 	handler.Get("/get-kind", handler.GetKind())
 
