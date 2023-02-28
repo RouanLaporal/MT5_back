@@ -45,14 +45,20 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Patch("/shop/{id}", handler.UpdateShop())
 
 	/* User route */
-	handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+	handler.Delete("/user/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 	handler.Patch("/user/update/{id}", handler.UpdateUser())
 
 	/* Benefit routes */
-	handler.Get("/get-benefit/{id}", handler.GetBenefitByShop())
-	handler.Post("/add-benefit", middlewareCustom.IsAuthorized(handler.AddBenefit()))
+	handler.Get("/benefit/get/{id}", handler.GetBenefitByShop())
+	handler.Post("/benefit/add", middlewareCustom.IsAuthorized(handler.AddBenefit()))
 	handler.Patch("/benefit/update/{id}", middlewareCustom.IsAuthorized(handler.UpdateBenefit()))
 	handler.Delete("/benefit/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteBenefit()))
+
+	/* Review routes */
+	handler.Get("/review/get/{id}", handler.GetReviewByShop())
+	handler.Post("/review/add", handler.AddReview())
+	handler.Patch("/review/update/{id}", handler.UpdateReview())
+	handler.Delete("/review/delete/{id}", handler.DeleteReview())
 
 	return handler
 }

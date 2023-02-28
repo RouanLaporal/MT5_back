@@ -12,7 +12,7 @@ func CreateStore(db *sql.DB) *Store {
 		NewShopStore(db),
 		// NewOpeningHoursStore(db),
 		NewBenefitStore(db),
-		// NewReviewStore(db),
+		NewReviewStore(db),
 		// NewReservationStore(db),
 	}
 }
@@ -23,6 +23,6 @@ type Store struct {
 	structure.ShopStoreInterface
 	structure.BenefitStoreInterface
 	// structure.OpeningHoursStoreInterface
-	// structure.ReviewStoreInterface
+	structure.ReviewStoreInterface
 	// structure.ReservationStoreInterface
 }

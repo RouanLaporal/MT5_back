@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS collaborator (
 );
 
 -- Table: Avis
-CREATE TABLE IF NOT EXISTS Review (
+CREATE TABLE IF NOT EXISTS reviews (
     id_review INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
@@ -98,8 +98,8 @@ CREATE TABLE IF NOT EXISTS Review (
     comment VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop),
-    FOREIGN KEY (id_user) REFERENCES User(id)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 
 -- Table: Réservation
