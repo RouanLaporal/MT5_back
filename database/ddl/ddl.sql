@@ -1,8 +1,8 @@
 -- Table: Utilisateur
 CREATE TABLE IF NOT EXISTS users (
     id_user INTEGER NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
     phone VARCHAR(25) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -12,16 +12,19 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (id_user)
 );
 
--- Table: Token
-CREATE TABLE IF NOT EXISTS Token {
-    id_token INTEGER NOT NULL AUTO_INCREMENT,
-    id_user INTEGER NOT NULL,
-    token VARCHAR(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS kinds (
+    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_token),
-    FOREIGN KEY (id_user) REFERENCES User(id_user) on delete cascade on update cascade
-};
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO kinds (name) VALUES 
+('Coiffeurs'),
+('Barbiers'),
+('Manucure'),
+('Instituts de beauté'),
+('Tatoueurs');
 
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
@@ -34,23 +37,37 @@ CREATE TABLE IF NOT EXISTS shops (
     zip_code VARCHAR(255) NOT NULL,
     phone VARCHAR(25) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    id_kind INT NOT NULL,
     id_user INT NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_shop),
-    FOREIGN KEY (id_kind) REFERENCES kind(id_kind),
-    FOREIGN KEY (id_user) REFERENCES users(id_user)
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS kinds (
-    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+--Table: Lien Etablissement et Type
+CREATE TABLE IF NOT EXISTS shop_kind(
+    id INT NOT NULL AUTO_INCREMENT,
+    id_shop INT NOT NULL,
+    id_kind INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_kind) REFERENCES kinds(id_kind) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Table: Token
+CREATE TABLE IF NOT EXISTS Token {
+    id_token INTEGER NOT NULL AUTO_INCREMENT,
+    id_user INTEGER NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_token),
+    FOREIGN KEY (id_user) REFERENCES User(id_user) ON UPDATE CASCADE ON DELETE CASCADE
+};
+
+
+
 
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS openingHours (

@@ -5,9 +5,6 @@ import (
 	"back_project/structure"
 	"encoding/json"
 	"net/http"
-	"strconv"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func (h *Handler) SignIn() http.HandlerFunc {
@@ -29,7 +26,7 @@ func (h *Handler) SignIn() http.HandlerFunc {
 			return
 		}
 
-		validToken, err := helper.GenerateJWT(auth.Email, auth.Role)
+		validToken, err := helper.GenerateJWT(auth.ID, auth.Email, auth.Role)
 		if err != nil {
 			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
 			writer.Header().Set("Content-Type", "application/json")
@@ -65,66 +62,31 @@ func (h *Handler) SignUp() http.HandlerFunc {
 			return
 		}
 
-		id, err := h.Store.UserStoreInterface.AddUser(user)
+		error := h.Store.UserStoreInterface.AddUser(user)
 
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		if error != nil {
+			http.Error(writer, error.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-			NewUser int    `json:"newUser"`
-		}{
-			Status:  "success",
-			Message: "Nouveau user inséré avec succès",
-			NewUser: id,
-		})
-	}
-}
-
-func (h *Handler) DeleteUser() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		QueryId := chi.URLParam(request, "id")
-		id, _ := strconv.Atoi(QueryId)
-		err := h.Store.UserStoreInterface.DeleteUser(id)
-
+		validToken, err := helper.GenerateJWT(user.ID, user.Email, user.Role)
 		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
+			writer.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(writer).Encode(err)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "User supprimé avec succès",
-		})
-	}
-}
+		var authenticationUser structure.AuthUser
 
-func (h *Handler) UpdateUser() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		QueryId := chi.URLParam(request, "id")
-		id_user, _ := strconv.Atoi(QueryId)
-		user := structure.User{}
-		json.NewDecoder(request.Body).Decode(&user)
+		authenticationUser.FirstName = user.FirstName
+		authenticationUser.LastName = user.LastName
+		authenticationUser.Email = user.Email
+		authenticationUser.Phone = user.Phone
+		authenticationUser.Role = user.Role
+		authenticationUser.TokenString = validToken
+
 		writer.Header().Set("Content-Type", "application/json")
-		err := h.Store.UserStoreInterface.UpdateUser(id_user, user)
-
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "User modifié avec succès",
-		})
+		json.NewEncoder(writer).Encode(authenticationUser)
 	}
 }

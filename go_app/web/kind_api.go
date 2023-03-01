@@ -14,6 +14,7 @@ func (h *Handler) GetKind() http.HandlerFunc {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}
 		err = json.NewEncoder(writer).Encode(kinds)
+
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

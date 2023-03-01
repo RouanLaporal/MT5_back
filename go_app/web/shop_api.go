@@ -1,6 +1,7 @@
 package web
 
 import (
+	"back_project/helper"
 	"back_project/structure"
 	"encoding/json"
 	"net/http"
@@ -11,25 +12,17 @@ import (
 
 func (h *Handler) AddShop() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		shop := structure.Shop{}
+		shop := structure.NewShop{}
 		json.NewDecoder(request.Body).Decode(&shop)
 
-		id, err := h.Store.ShopStoreInterface.AddShop(shop)
+		_, err := h.Store.ShopStoreInterface.AddShop(shop)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-			NewShop int    `json:"newShop"`
-		}{
-			Status:  "success",
-			Message: "Nouvelle boutique inséré avec succès",
-			NewShop: id,
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }
 
@@ -64,13 +57,7 @@ func (handler *Handler) DeleteShop() http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "Boutique supprimé avec succès",
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }
 
@@ -88,23 +75,20 @@ func (handler *Handler) UpdateShop() http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "Boutique modifié avec succès",
-		})
+		json.NewEncoder(writer).Encode(true)
 
 	}
 }
 
 func (handler *Handler) GetAllShopByUser() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		QueryId := chi.URLParam(request, "id_user")
-		id, _ := strconv.Atoi(QueryId)
+		token, err := helper.ExtractClaims(writer, request)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		writer.Header().Set("Content-Type", "application/json")
-		shops, err := handler.Store.GetAllShopByUser(id)
+		shops, err := handler.Store.GetAllShopByUser(token.IDUser)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}

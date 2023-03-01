@@ -18,7 +18,7 @@ type UserStore struct {
 
 func (s *UserStore) GetUserByEmail(email string) (structure.User, error) {
 	var user structure.User
-	rows := s.DB.QueryRow("SELECT id_user, first_name, last_name, phone, email, password, role FROM users WHERE email = ?", email)
+	rows := s.DB.QueryRow("SELECT id_user, firstName, lastName, phone, email, password, role FROM users WHERE email = ?", email)
 	switch err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Phone, &user.Email, &user.Password, &user.Role); err {
 	case sql.ErrNoRows:
 		return user, err
@@ -29,21 +29,16 @@ func (s *UserStore) GetUserByEmail(email string) (structure.User, error) {
 	}
 }
 
-func (s *UserStore) AddUser(item structure.User) (int, error) {
+func (s *UserStore) AddUser(item structure.User) error {
 	hashPassword, _ := helper.HashPassword(item.Password)
 
 	item.Password = hashPassword
-	res, err := s.DB.Exec("INSERT INTO users (first_name, last_name, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)", item.FirstName, item.LastName, item.Phone, item.Email, item.Password, item.Role)
+	_, err := s.DB.Exec("INSERT INTO users (firstName, lastName, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)", item.FirstName, item.LastName, item.Phone, item.Email, item.Password, item.Role)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	id, err := res.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(id), nil
+	return nil
 }
 
 func (s *UserStore) DeleteUser(id int) error {
@@ -54,16 +49,35 @@ func (s *UserStore) DeleteUser(id int) error {
 	return nil
 }
 
-func (s *UserStore) UpdateUser(id_user int, updateUser structure.User) error { //TODO encrypter le mdp
+func (s *UserStore) UpdateUser(id_user int, updateUser structure.UpdateUser) error {
 	sqlStatement := ` UPDATE users SET 
-		first_name = ?,
-		last_name = ?, 
-		phone = ?, 
-		email = ?, 
-		password = ?
+		firstName = ?,
+		lastName = ?,
+		phone = ?,
+		email = ?
 	WHERE id_user = ?`
 
-	_, err := s.Exec(sqlStatement, updateUser.FirstName, updateUser.LastName, updateUser.Phone, updateUser.Email, updateUser.Password, id_user)
+	_, err := s.Exec(
+		sqlStatement,
+		updateUser.FirstName,
+		updateUser.LastName,
+		updateUser.Phone,
+		updateUser.Email,
+		id_user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *UserStore) UpdatePassword(email string, password string) error {
+	hashPassword, _ := helper.HashPassword(password)
+
+	sqlStatement := ` UPDATE users SET 
+		password = ?
+	WHERE email = ?`
+
+	_, err := s.Exec(sqlStatement, hashPassword, email)
 	if err != nil {
 		return err
 	}

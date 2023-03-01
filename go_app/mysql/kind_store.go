@@ -15,15 +15,26 @@ type KindStore struct {
 	*sql.DB
 }
 
-func (s *KindStore) GetAllKind() (structure.Kind, error) {
-	var kind structure.Kind
-	rows := s.DB.QueryRow("SELECT id_kind, name FROM kind")
-	switch err := rows.Scan(&kind.ID, &kind.Name); err {
-	case sql.ErrNoRows:
-		return kind, err
-	case nil:
-		return kind, nil
-	default:
-		return kind, err
+func (kind_store *KindStore) GetAllKind() ([]structure.Kind, error) {
+	var kinds []structure.Kind
+	rows, err := kind_store.DB.Query("SELECT id_kind, name FROM kinds")
+	if err != nil {
+		return []structure.Kind{}, err
 	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var kind structure.Kind
+		if err = rows.Scan(
+			&kind.ID,
+			&kind.Name); err != nil {
+			return []structure.Kind{}, err
+		}
+		kinds = append(kinds, kind)
+	}
+	if err = rows.Err(); err != nil {
+		return []structure.Kind{}, err
+	}
+
+	return kinds, nil
 }
