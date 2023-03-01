@@ -12,6 +12,20 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (id_user)
 );
 
+CREATE TABLE IF NOT EXISTS kinds (
+    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO kinds (name) VALUES 
+('Coiffeurs'),
+('Barbiers'),
+('Manucure'),
+('Instituts de beauté'),
+('Tatoueurs');
+
 -- Table: Token
 CREATE TABLE IF NOT EXISTS Token {
     id_token INTEGER NOT NULL AUTO_INCREMENT,
@@ -48,10 +62,9 @@ CREATE TABLE IF NOT EXISTS shops (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_shop),
-    FOREIGN KEY (id_kind) REFERENCES kinds(id_kind),
-    FOREIGN KEY (id_user) REFERENCES users(id_user)
+    FOREIGN KEY (id_kind) REFERENCES kind(id_kind) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS OpeningHours (
     id_day INTEGER PRIMARY KEY NOT NULL,

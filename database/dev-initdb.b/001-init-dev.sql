@@ -24,3 +24,19 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_user)
 );
+
+-- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
+CREATE TABLE IF NOT EXISTS kinds (
+    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO kinds (name) VALUES 
+('Coiffeurs'),
+('Barbiers'),
+('Manucure'),
+('Instituts de beauté'),
+('Tatoueurs');
+
