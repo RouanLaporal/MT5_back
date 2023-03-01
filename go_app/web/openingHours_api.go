@@ -22,12 +22,10 @@ func (handler *Handler) AddOpeningHours() http.HandlerFunc {
 		}
 
 		json.NewEncoder(writer).Encode(struct {
-			Status          string `json:"status"`
-			Message         string `json:"message"`
-			NewOpeningHours int    `json:"newOpeningHours"`
+			Status          bool `json:"status"`
+			NewOpeningHours int  `json:"newOpeningHours"`
 		}{
-			Status:          "success",
-			Message:         "Heure d'ouverture bien enregistré",
+			Status:          true,
 			NewOpeningHours: id,
 		})
 	}
@@ -47,5 +45,23 @@ func (handler *Handler) GetOpeningHoursByShop() http.HandlerFunc {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	}
+}
+
+func (handler *Handler) UpdateOpeningHours() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+		opening_hours := structure.OpeningHours{}
+
+		json.NewDecoder(request.Body).Decode(&opening_hours)
+		writer.Header().Set("Content-Type", "application/json")
+		err := handler.Store.OpeningHoursStoreInterface.UpdateOpeningHours(id, opening_hours)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(writer).Encode(true)
 	}
 }

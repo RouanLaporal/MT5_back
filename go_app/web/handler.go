@@ -51,7 +51,7 @@ func NewHandler(store *database.Store) *Handler {
 
 	handler.Post("/opening-hours", handler.AddOpeningHours())
 	handler.Get("/opening-hours/{id_shop}", handler.GetOpeningHoursByShop())
-	// handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+	handler.Patch("/opening-hours/{id}", handler.UpdateOpeningHours())
 	/* User route */
 	handler.Delete("/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 	handler.Patch("/user/update/{id}", handler.UpdateUser()) //modify for authorization

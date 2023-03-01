@@ -50,7 +50,7 @@ func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) 
 func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id int, updated_openingHours structure.OpeningHours) error {
 	sqlStatement := `UPDATE openingHours SET 
 	open = ?,
-	close = ?,
+	close = ?
 	WHERE id = ?`
 
 	_, err := openingHours_store.DB.Exec(sqlStatement,
