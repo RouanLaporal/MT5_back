@@ -17,7 +17,7 @@ type OpeningHoursStore struct {
 
 func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours structure.OpeningHours) (int, error) {
 	res, err := openingHours_store.DB.Exec(
-		"INSERT INTO openingHours (id_day, id_shop, open, close) VALUES (?, ?, ?, ?)",
+		"INSERT INTO openings (id_day, id_shop, open, close) VALUES (?, ?, ?, ?)",
 		new_openingHours.DayID,
 		new_openingHours.ShopID,
 		new_openingHours.Open,
@@ -36,7 +36,7 @@ func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours st
 
 func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) (structure.ShowOpening, error) {
 	var show_opening structure.ShowOpening
-	rows := openingHours_store.DB.QueryRow("SELECT open, close, id_day FROM openingHours WHERE id_shop = ?", id_shop)
+	rows := openingHours_store.DB.QueryRow("SELECT open, close, id_day FROM openings WHERE id_shop = ?", id_shop)
 	switch err := rows.Scan(&show_opening.Open, &show_opening.Close, &show_opening.DayID); err {
 	case sql.ErrNoRows:
 		return show_opening, err
@@ -48,7 +48,7 @@ func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) 
 }
 
 func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id int, updated_openingHours structure.OpeningHours) error {
-	sqlStatement := `UPDATE openingHours SET 
+	sqlStatement := `UPDATE openings SET 
 	open = ?,
 	close = ?
 	WHERE id = ?`
@@ -62,5 +62,13 @@ func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id int, updated_
 		return err
 	}
 	return nil
+}
 
+func (openingHours_store *OpeningHoursStore) DeleteOpeningHours(id int) error {
+	sqlStatement := `DELETE FROM openings WHERE id = ?`
+	_, err := openingHours_store.DB.Exec(sqlStatement, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

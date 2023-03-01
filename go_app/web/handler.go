@@ -45,9 +45,11 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Patch("/collaborator/{id}", handler.UpdateCollaborator())
 	handler.Delete("/collaborator/{id}", handler.DeleteCollaborator())
 
-	handler.Post("/opening-hours", handler.AddOpeningHours())
+	handler.Post("/opening-hours", middlewareCustom.IsAuthorized(handler.AddOpeningHours()))
+	handler.Patch("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.UpdateOpeningHours()))
+	handler.Delete("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.DeleteOpeningHours()))
 	handler.Get("/opening-hours/{id_shop}", handler.GetOpeningHoursByShop())
-	handler.Patch("/opening-hours/{id}", handler.UpdateOpeningHours())
+
 	/* User route */
 	handler.Post("/user/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
 	handler.Patch("/user/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))

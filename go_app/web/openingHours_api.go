@@ -14,20 +14,14 @@ func (handler *Handler) AddOpeningHours() http.HandlerFunc {
 		opening_hours := structure.OpeningHours{}
 		json.NewDecoder(request.Body).Decode(&opening_hours)
 
-		id, err := handler.Store.OpeningHoursStoreInterface.AddOpeningHours(opening_hours)
+		_, err := handler.Store.OpeningHoursStoreInterface.AddOpeningHours(opening_hours)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status          bool `json:"status"`
-			NewOpeningHours int  `json:"newOpeningHours"`
-		}{
-			Status:          true,
-			NewOpeningHours: id,
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }
 
@@ -57,6 +51,21 @@ func (handler *Handler) UpdateOpeningHours() http.HandlerFunc {
 		json.NewDecoder(request.Body).Decode(&opening_hours)
 		writer.Header().Set("Content-Type", "application/json")
 		err := handler.Store.OpeningHoursStoreInterface.UpdateOpeningHours(id, opening_hours)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(writer).Encode(true)
+	}
+}
+
+func (handler *Handler) DeleteOpeningHours() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+		writer.Header().Set("Content-Type", "application/json")
+		err := handler.Store.OpeningHoursStoreInterface.DeleteOpeningHours(id)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
