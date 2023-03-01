@@ -57,16 +57,16 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Delete("/user/delete-profile", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 
 	/* Benefit routes */
-	handler.Get("/benefit/get/{id}", handler.GetBenefitByShop())
-	handler.Post("/benefit/add", middlewareCustom.IsAuthorized(handler.AddBenefit()))
-	handler.Patch("/benefit/update/{id}", middlewareCustom.IsAuthorized(handler.UpdateBenefit()))
-	handler.Delete("/benefit/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteBenefit()))
+	handler.Get("/benefit/{id}", handler.GetBenefitByShop())
+	handler.Post("/benefit", middlewareCustom.IsAuthorized(handler.AddBenefit()))
+	handler.Patch("/benefit/{id}", middlewareCustom.IsAuthorized(handler.UpdateBenefit()))
+	handler.Delete("/benefit/{id}", middlewareCustom.IsAuthorized(handler.DeleteBenefit()))
 
 	/* Review routes */
-	handler.Get("/review/get/{id}", handler.GetReviewByShop())
-	handler.Post("/review/add", handler.AddReview())
-	handler.Patch("/review/update/{id}", handler.UpdateReview())
-	handler.Delete("/review/delete/{id}", handler.DeleteReview())
+	handler.Get("/review/{id}", handler.GetReviewByShop())
+	handler.Post("/review", middlewareCustom.IsAuthorized(handler.AddReview()))
+	handler.Patch("/review/{id}", handler.UpdateReview())
+	handler.Delete("/review/{id}", handler.DeleteReview())
 
 	return handler
 }

@@ -15,9 +15,9 @@ type ReviewStore struct {
 	*sql.DB
 }
 
-func (s *ReviewStore) AddReview(item structure.Review) (int, error) {
+func (s *ReviewStore) AddReview(item structure.Review, id_user int) (int, error) {
 
-	res, err := s.DB.Exec("INSERT INTO reviews (id_shop, id_user, rating, comment) VALUES (?, ?, ?, ?)", item.IDShop, item.IDUser, item.Rating, item.Comment)
+	res, err := s.DB.Exec("INSERT INTO reviews (id_shop, id_user, rating, comment) VALUES (?, ?, ?, ?)", item.IDShop, id_user, item.Rating, item.Comment)
 
 	if err != nil {
 		return 0, err

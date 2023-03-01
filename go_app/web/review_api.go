@@ -1,6 +1,7 @@
 package web
 
 import (
+	"back_project/helper"
 	"back_project/structure"
 	"encoding/json"
 	"net/http"
@@ -11,10 +12,15 @@ import (
 
 func (h *Handler) AddReview() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		token, err := helper.ExtractClaims(writer, request)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		review := structure.Review{}
 		json.NewDecoder(request.Body).Decode(&review)
 
-		id, err := h.Store.ReviewStoreInterface.AddReview(review)
+		id, err := h.Store.ReviewStoreInterface.AddReview(review, token.IDUser)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -87,12 +93,6 @@ func (h *Handler) DeleteReview() http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-		}{
-			Status:  "success",
-			Message: "Commentaire supprimé avec succès",
-		})
+		json.NewEncoder(writer).Encode(true)
 	}
 }

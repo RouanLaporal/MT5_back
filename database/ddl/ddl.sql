@@ -55,21 +55,6 @@ CREATE TABLE IF NOT EXISTS shop_kind(
     FOREIGN KEY (id_kind) REFERENCES kinds(id_kind) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
-
-
--- Table: Horaires d'ouverture
-CREATE TABLE IF NOT EXISTS openings (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    id_day INTEGER NOT NULL,
-    id_shop INTEGER NOT NULL,
-    open VARCHAR(255) NOT NULL,
-    close VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) on delete cascade on update cascade
-);
-
 -- Table: Prestation
 CREATE TABLE IF NOT EXISTS benefits (
     id_benefit INTEGER NOT NULL AUTO_INCREMENT,
@@ -81,7 +66,7 @@ CREATE TABLE IF NOT EXISTS benefits (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_benefit),
-    FOREIGN KEY (id_shop) REFERENCES shops(id_shop)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
