@@ -26,28 +26,6 @@ INSERT INTO kinds (name) VALUES
 ('Instituts de beauté'),
 ('Tatoueurs');
 
-<<<<<<< HEAD
--- Table: Token
-CREATE TABLE IF NOT EXISTS Token {
-    id_token INTEGER NOT NULL AUTO_INCREMENT,
-    id_user INTEGER NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_token),
-    FOREIGN KEY (id_user) REFERENCES User(id_user) ON UPDATE CASCADE ON DELETE CASCADE
-};
-
--- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)
-CREATE TABLE IF NOT EXISTS kinds (
-    id_kind INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-=======
->>>>>>> staging
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
     id_shop INT NOT NULL AUTO_INCREMENT,
@@ -66,8 +44,6 @@ CREATE TABLE IF NOT EXISTS shops (
     PRIMARY KEY (id_shop),
     FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
-<<<<<<< HEAD
-=======
 
 --Table: Lien Etablissement et Type
 CREATE TABLE IF NOT EXISTS shop_kind(
@@ -82,7 +58,6 @@ CREATE TABLE IF NOT EXISTS shop_kind(
 
 
 
->>>>>>> staging
 -- Table: Horaires d'ouverture
 CREATE TABLE IF NOT EXISTS openings (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,

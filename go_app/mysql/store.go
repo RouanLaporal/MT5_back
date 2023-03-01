@@ -25,5 +25,6 @@ type Store struct {
 	structure.BenefitStoreInterface
 	structure.ReviewStoreInterface
 	structure.CollaboratorStoreInterface
+	structure.OpeningHoursStoreInterface
 	// structure.ReservationStoreInterface
 }
