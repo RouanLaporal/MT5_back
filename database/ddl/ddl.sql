@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Token {
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_token),
-    FOREIGN KEY (id_user) REFERENCES User(id_user)
+    FOREIGN KEY (id_user) REFERENCES User(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 };
 
 -- Table: kind d'étalissement (ex: coiffeur, barbier, tatoueur, etc.)

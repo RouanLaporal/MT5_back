@@ -19,21 +19,18 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Use(middleware.Logger)
 
 	handler.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		AllowedOrigins: []string{"https://*", "http://*"},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
-		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
-		MaxAge:           300, // Maximum value not ignored by any of major browsers
+		AllowCredentials: true,
+		AllowedOrigins:   []string{"*"},
+		AllowedHeaders:   []string{"X-PINGOTHER", "Accept", "Authorization", "Content-Type", "X-CSRF-Token", "Token", "Access-Control-Allow-Origin"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 	}))
 
 	/* Authentification route */
 
-	handler.Post("/login", handler.SignIn())
-	handler.Post("/register", handler.SignUp())
+	handler.Post("/auth/login", handler.SignIn())
+	handler.Post("/auth/register", handler.SignUp())
 
+	/* Kind route */
 	handler.Get("/get-kind", handler.GetKind())
 
 	/* Shop route */
@@ -45,8 +42,10 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Patch("/shop/{id}", handler.UpdateShop())
 
 	/* User route */
-	handler.Delete("/user/delete/{id}", middlewareCustom.IsAuthorized(handler.DeleteUser()))
-	handler.Patch("/user/update/{id}", handler.UpdateUser())
+	handler.Post("/user/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
+	handler.Patch("/user/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))
+	handler.Patch("/user/update-profile", middlewareCustom.IsAuthorized(handler.UpdateUser()))
+	handler.Delete("/user/delete-profile", middlewareCustom.IsAuthorized(handler.DeleteUser()))
 
 	/* Benefit routes */
 	handler.Get("/benefit/get/{id}", handler.GetBenefitByShop())
