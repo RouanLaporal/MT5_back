@@ -22,15 +22,6 @@ type Shop struct {
 	UserID      int    `json:"id_user"`
 }
 
-type Kind struct {
-	ID   int    `json:"id_kind"`
-	Name string `json:"name"`
-}
-
-type KindStoreInterface interface {
-	GetAllKind() (Kind, error)
-}
-
 type ShopStoreInterface interface {
 	// GetAllShopByKindAndPosition(id_type int) ([]Shop, error)
 	GetAllShopByKindAndCity(id_kind int, city string) ([]Shop, error)
