@@ -2,24 +2,32 @@ package structure
 
 type User struct {
 	ID        int    `json:"id_user"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 	Phone     string `json:"phone"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Role      string `json:"role"`
 }
 
+type UpdateUser struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email"`
+}
+
 type UserStoreInterface interface {
 	GetUserByEmail(email string) (User, error)
-	AddUser(item User) (int, error)
+	AddUser(item User) error
 	DeleteUser(id int) error
-	UpdateUser(id int, user User) error
+	UpdateUser(id int, user UpdateUser) error
+	UpdatePassword(email string, password string) error
 }
 
 type AuthUser struct {
-	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"`
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
 	Email       string `json:"email"`
 	Phone       string `json:"phone"`
 	Role        string `json:"role"`
@@ -27,6 +35,7 @@ type AuthUser struct {
 }
 
 type Token struct {
+	IDUser      int    `json:"id_user"`
 	Role        string `json:"role"`
 	Email       string `json:"email"`
 	TokenString string `json:"token"`
@@ -34,6 +43,10 @@ type Token struct {
 
 type Authentication struct {
 	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type Password struct {
 	Password string `json:"password"`
 }
 
