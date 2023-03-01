@@ -31,7 +31,7 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Post("/auth/register", handler.SignUp())
 
 	/* Kind route */
-	handler.Get("/get-kind", handler.GetKind())
+	handler.Get("/kinds", handler.GetKind())
 
 	/* Shop route */
 
