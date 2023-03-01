@@ -26,6 +26,7 @@ INSERT INTO kinds (name) VALUES
 ('Instituts de beauté'),
 ('Tatoueurs');
 
+<<<<<<< HEAD
 -- Table: Token
 CREATE TABLE IF NOT EXISTS Token {
     id_token INTEGER NOT NULL AUTO_INCREMENT,
@@ -45,6 +46,8 @@ CREATE TABLE IF NOT EXISTS kinds (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+=======
+>>>>>>> staging
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
     id_shop INT NOT NULL AUTO_INCREMENT,
@@ -56,24 +59,40 @@ CREATE TABLE IF NOT EXISTS shops (
     zip_code VARCHAR(255) NOT NULL,
     phone VARCHAR(25) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    id_kind INT NOT NULL,
     id_user INT NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_shop),
-    FOREIGN KEY (id_kind) REFERENCES kind(id_kind) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
+<<<<<<< HEAD
+=======
+
+--Table: Lien Etablissement et Type
+CREATE TABLE IF NOT EXISTS shop_kind(
+    id INT NOT NULL AUTO_INCREMENT,
+    id_shop INT NOT NULL,
+    id_kind INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_kind) REFERENCES kinds(id_kind) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+
+>>>>>>> staging
 -- Table: Horaires d'ouverture
-CREATE TABLE IF NOT EXISTS OpeningHours (
-    id_day INTEGER PRIMARY KEY NOT NULL,
+CREATE TABLE IF NOT EXISTS openings (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_day INTEGER NOT NULL,
     id_shop INTEGER NOT NULL,
     open VARCHAR(255) NOT NULL,
     close VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) on delete cascade on update cascade
 );
 
 -- Table: Prestation
@@ -99,7 +118,7 @@ CREATE TABLE IF NOT EXISTS collaborator (
     email VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    FOREIGN KEY(id_shop) REFERENCES shops(id_shop)
 );
 
 -- Table: Avis

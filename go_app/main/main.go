@@ -11,6 +11,11 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
+func enableCors(writer *http.ResponseWriter) {
+	(*writer).Header().Set("Access-Control-Allow-Origin", "*")
+
+}
+
 func main() {
 	conf := mysql.Config{
 		User:                 "root",

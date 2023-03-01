@@ -15,9 +15,9 @@ type ShopStore struct {
 	*sql.DB
 }
 
-func (shop_store *ShopStore) AddShop(new_shop structure.Shop) (int, error) {
+func (shop_store *ShopStore) AddShop(new_shop structure.NewShop) (int, error) {
 	res, err := shop_store.DB.Exec(
-		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_kind, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		new_shop.Name,
 		new_shop.ZipCode,
 		new_shop.City,
@@ -27,7 +27,6 @@ func (shop_store *ShopStore) AddShop(new_shop structure.Shop) (int, error) {
 		new_shop.Phone,
 		new_shop.Email,
 		new_shop.Description,
-		new_shop.KindID,
 		new_shop.UserID)
 	if err != nil {
 		return 0, err
@@ -37,19 +36,24 @@ func (shop_store *ShopStore) AddShop(new_shop structure.Shop) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-
+	for _, element := range new_shop.KindID {
+		_, err := shop_store.DB.Exec(
+			"INSERT INTO shop_kind (id_shop, id_kind) VALUES (?,?)",
+			id,
+			element)
+		if err != nil {
+			return 0, err
+		}
+	}
 	return int(id), nil
 }
 
 func (shop_store *ShopStore) GetAllShopByKindAndCity(id_kind int, city string) ([]structure.Shop, error) {
 	var shops []structure.Shop
-
-	rows, err := shop_store.DB.Query("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_kind, id_user FROM shops where id_kind = ? AND city = ? ", id_kind, city)
+	rows, err := shop_store.DB.Query("SELECT shops.id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops  INNER JOIN shop_kind on shop_kind.id_shop = shops.id_shop WHERE shop_kind.id_kind = ? AND city = ? ", id_kind, city)
 	if err != nil {
 		return []structure.Shop{}, err
 	}
-	defer rows.Close()
-
 	for rows.Next() {
 		var shop structure.Shop
 		if err = rows.Scan(
@@ -63,21 +67,22 @@ func (shop_store *ShopStore) GetAllShopByKindAndCity(id_kind int, city string) (
 			&shop.Phone,
 			&shop.Email,
 			&shop.Description,
-			&shop.KindID,
 			&shop.UserID); err != nil {
 			return []structure.Shop{}, err
 		}
 		shops = append(shops, shop)
 	}
-
 	if err = rows.Err(); err != nil {
 		return []structure.Shop{}, err
+
 	}
+	defer rows.Close()
 
 	return shops, nil
 }
 
 func (shop_store *ShopStore) DeleteShop(id_shop int) error {
+
 	_, err := shop_store.DB.Exec("DELETE FROM shops WHERE id_shop = ?", id_shop)
 	if err != nil {
 		return err
@@ -95,9 +100,7 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 	country = ?,
 	phone = ?,
 	email = ?,
-	description = ?, 
-	id_kind = ?, 
-	id_user = ?
+	description = ? 
 	WHERE id_shop = ?`
 
 	_, err := shop_store.DB.Exec(sqlStatement,
@@ -110,8 +113,6 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 		updated_shop.Phone,
 		updated_shop.Email,
 		updated_shop.Description,
-		updated_shop.KindID,
-		updated_shop.UserID,
 		id_shop,
 	)
 	if err != nil {
@@ -123,7 +124,7 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 func (shop_store *ShopStore) GetAllShopByUser(id_user int) ([]structure.Shop, error) {
 	var shops []structure.Shop
 
-	rows, err := shop_store.DB.Query("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_kind, id_user FROM shops where id_user = ?", id_user)
+	rows, err := shop_store.DB.Query("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops where id_user = ?", id_user)
 	if err != nil {
 		return []structure.Shop{}, err
 	}
@@ -142,7 +143,6 @@ func (shop_store *ShopStore) GetAllShopByUser(id_user int) ([]structure.Shop, er
 			&shop.Phone,
 			&shop.Email,
 			&shop.Description,
-			&shop.KindID,
 			&shop.UserID); err != nil {
 			return []structure.Shop{}, err
 		}

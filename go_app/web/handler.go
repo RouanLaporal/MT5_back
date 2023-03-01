@@ -30,16 +30,25 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Post("/auth/login", handler.SignIn())
 	handler.Post("/auth/register", handler.SignUp())
 
-	/* Kind route */
-	handler.Get("/kinds", handler.GetKind())
-
 	/* Shop route */
 
-	handler.Post("/new-shop", handler.AddShop())
+	handler.Post("/new-shop", middlewareCustom.IsAuthorized(handler.AddShop()))
+	handler.Get("/get-shop-by-user", middlewareCustom.IsAuthorized(handler.GetAllShopByUser()))
+	handler.Delete("/shop/{id}", middlewareCustom.IsAuthorized(handler.DeleteShop()))
+	handler.Patch("/shop/{id}", middlewareCustom.IsAuthorized(handler.UpdateShop()))
+
 	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
-	handler.Get("/get-shop-by-user/{id_user}", handler.GetAllShopByUser())
-	handler.Delete("/shop/{id}", handler.DeleteShop())
-	handler.Patch("/shop/{id}", handler.UpdateShop())
+	handler.Get("/kinds", handler.GetKind())
+
+	handler.Get("/collaborators/{id_shop}", handler.GetCollaboratorByShop())
+	handler.Post("/new-collaborator", handler.AddCollaborator())
+	handler.Patch("/collaborator/{id}", handler.UpdateCollaborator())
+	handler.Delete("/collaborator/{id}", handler.DeleteCollaborator())
+
+	handler.Post("/opening-hours", middlewareCustom.IsAuthorized(handler.AddOpeningHours()))
+	handler.Patch("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.UpdateOpeningHours()))
+	handler.Delete("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.DeleteOpeningHours()))
+	handler.Get("/opening-hours/{id_shop}", handler.GetOpeningHoursByShop())
 
 	/* User route */
 	handler.Post("/user/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
