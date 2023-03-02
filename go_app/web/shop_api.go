@@ -12,17 +12,30 @@ import (
 
 func (h *Handler) AddShop() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		token, err := helper.ExtractClaims(writer, request)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		shop := structure.NewShop{}
 		json.NewDecoder(request.Body).Decode(&shop)
 
-		_, err := h.Store.ShopStoreInterface.AddShop(shop)
+		id, err := h.Store.ShopStoreInterface.AddShop(shop, token.IDUser)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(true)
+		json.NewEncoder(writer).Encode(struct {
+			Status  string `json:"status"`
+			Message string `json:"message"`
+			NewShop int    `json:"newShop"`
+		}{
+			Status:  "success",
+			Message: "Nouveau commentaire ajouté avec succès",
+			NewShop: id,
+		})
 	}
 }
 

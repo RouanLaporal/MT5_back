@@ -42,7 +42,7 @@ type ShopStoreInterface interface {
 	// GetAllShopByKindAndPosition(id_type int) ([]Shop, error)
 	GetAllShopByKindAndCity(id_kind int, city string) ([]Shop, error)
 	GetAllShopByUser(id_user int) ([]Shop, error)
-	AddShop(shop NewShop) (int, error)
+	AddShop(shop NewShop, id_user int) (int, error)
 	DeleteShop(id int) error
 	UpdateShop(id int, item Shop) error
 }
