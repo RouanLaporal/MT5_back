@@ -11,7 +11,6 @@ grant select, update, insert, delete on challenge_project.* to 'api-dev'@'%.%.%.
 grant trigger on challenge_project.* to 'api-dev'@'%.%.%.%';
 flush privileges;
 
-use MT5_back_project;
 -- Table: Utilisateur
 CREATE TABLE IF NOT EXISTS users (
     id_user INTEGER NOT NULL AUTO_INCREMENT,
