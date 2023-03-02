@@ -40,11 +40,33 @@ func NewHandler(store *database.Store) *Handler {
 	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
 	handler.Get("/kinds", handler.GetKind())
 
+	handler.Get("/collaborators/{id_shop}", handler.GetCollaboratorByShop())
+	handler.Post("/new-collaborator", handler.AddCollaborator())
+	handler.Patch("/collaborator/{id}", handler.UpdateCollaborator())
+	handler.Delete("/collaborator/{id}", handler.DeleteCollaborator())
+
+	handler.Post("/opening-hours", middlewareCustom.IsAuthorized(handler.AddOpeningHours()))
+	handler.Patch("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.UpdateOpeningHours()))
+	handler.Delete("/opening-hours/{id}", middlewareCustom.IsAuthorized(handler.DeleteOpeningHours()))
+	handler.Get("/opening-hours/{id_shop}", handler.GetOpeningHoursByShop())
+
 	/* User route */
 	handler.Post("/user/verify-password", middlewareCustom.IsAuthorized(handler.VerifyPassword()))
 	handler.Patch("/user/update-password", middlewareCustom.IsAuthorized(handler.UpdatePassword()))
 	handler.Patch("/user/update-profile", middlewareCustom.IsAuthorized(handler.UpdateUser()))
 	handler.Delete("/user/delete-profile", middlewareCustom.IsAuthorized(handler.DeleteUser()))
+
+	/* Benefit routes */
+	handler.Get("/benefit/{id}", handler.GetBenefitByShop())
+	handler.Post("/benefit", middlewareCustom.IsAuthorized(handler.AddBenefit()))
+	handler.Patch("/benefit/{id}", middlewareCustom.IsAuthorized(handler.UpdateBenefit()))
+	handler.Delete("/benefit/{id}", middlewareCustom.IsAuthorized(handler.DeleteBenefit()))
+
+	/* Review routes */
+	handler.Get("/review/{id}", handler.GetReviewByShop())
+	handler.Post("/review", middlewareCustom.IsAuthorized(handler.AddReview()))
+	handler.Patch("/review/{id}", handler.UpdateReview())
+	handler.Delete("/review/{id}", handler.DeleteReview())
 
 	return handler
 }

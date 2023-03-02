@@ -55,34 +55,9 @@ CREATE TABLE IF NOT EXISTS shop_kind(
     FOREIGN KEY (id_kind) REFERENCES kinds(id_kind) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table: Token
-CREATE TABLE IF NOT EXISTS Token {
-    id_token INTEGER NOT NULL AUTO_INCREMENT,
-    id_user INTEGER NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_token),
-    FOREIGN KEY (id_user) REFERENCES User(id_user) ON UPDATE CASCADE ON DELETE CASCADE
-};
-
-
-
-
--- Table: Horaires d'ouverture
-CREATE TABLE IF NOT EXISTS OpeningHours (
-    id_day INTEGER PRIMARY KEY NOT NULL,
-    id_shop INTEGER NOT NULL,
-    open VARCHAR(255) NOT NULL,
-    close VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
-);
-
 -- Table: Prestation
-CREATE TABLE IF NOT EXISTS Benefit (
-    id_benefit INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS benefits (
+    id_benefit INTEGER NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -90,11 +65,12 @@ CREATE TABLE IF NOT EXISTS Benefit (
     price VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    PRIMARY KEY (id_benefit),
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table: Collaborateur de l'établissement (les employés qui seront associés a une prestation ou choisie par le client)
-CREATE TABLE IF NOT EXISTS Collaborator (
+CREATE TABLE IF NOT EXISTS collaborator (
     id_collaborator INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -102,11 +78,11 @@ CREATE TABLE IF NOT EXISTS Collaborator (
     email VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop)
+    FOREIGN KEY(id_shop) REFERENCES shops(id_shop)
 );
 
 -- Table: Avis
-CREATE TABLE IF NOT EXISTS Review (
+CREATE TABLE IF NOT EXISTS reviews (
     id_review INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_shop INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
@@ -114,8 +90,8 @@ CREATE TABLE IF NOT EXISTS Review (
     comment VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_shop) REFERENCES Shop(id_shop),
-    FOREIGN KEY (id_user) REFERENCES User(id)
+    FOREIGN KEY (id_shop) REFERENCES shops(id_shop),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 
 -- Table: Réservation
