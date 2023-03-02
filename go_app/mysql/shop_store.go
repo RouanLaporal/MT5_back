@@ -1,6 +1,7 @@
 package database
 
 import (
+	"back_project/helper"
 	"back_project/structure"
 	"database/sql"
 )
@@ -13,6 +14,50 @@ func NewShopStore(db *sql.DB) *ShopStore {
 
 type ShopStore struct {
 	*sql.DB
+}
+
+func (shop_store *ShopStore) AddShopAndUser(new_shop structure.NewShopAndUser) error {
+	hashPassword, _ := helper.HashPassword(new_shop.Password)
+
+	new_shop.Password = hashPassword
+	res, err := shop_store.DB.Exec("INSERT INTO users (firstName, lastName, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)", new_shop.FirstName, new_shop.LastName, new_shop.Phone, new_shop.Email, new_shop.Password, "trader")
+	if err != nil {
+		return err
+	}
+	id_user, err := res.LastInsertId()
+	if err != nil {
+		return err
+	}
+	res, err = shop_store.DB.Exec(
+		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		new_shop.Name,
+		new_shop.ZipCode,
+		new_shop.City,
+		new_shop.Lat,
+		new_shop.Long,
+		new_shop.Country,
+		new_shop.Phone,
+		new_shop.Email,
+		new_shop.Description,
+		id_user)
+	if err != nil {
+		return err
+	}
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		return err
+	}
+	for _, element := range new_shop.KindID {
+		_, err := shop_store.DB.Exec(
+			"INSERT INTO shop_kind (id_shop, id_kind) VALUES (?,?)",
+			id,
+			element)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (shop_store *ShopStore) AddShop(new_shop structure.NewShop, id_user int) (int, error) {

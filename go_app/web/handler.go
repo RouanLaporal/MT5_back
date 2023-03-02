@@ -32,7 +32,7 @@ func NewHandler(store *database.Store) *Handler {
 
 	/* Shop route */
 
-	handler.Post("/new-shop", middlewareCustom.IsAuthorized(handler.AddShop()))
+	handler.Post("/new-shop", handler.AddShopAndUser())
 	handler.Get("/get-shop-by-user", middlewareCustom.IsAuthorized(handler.GetAllShopByUser()))
 	handler.Get("/shop/{id}", handler.GetShop())
 	handler.Delete("/shop/{id}", middlewareCustom.IsAuthorized(handler.DeleteShop()))
