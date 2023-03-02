@@ -10,6 +10,21 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Reservation godoc
+//
+//	@Summary		AddReservation
+//	@Description	Create a reservation for a shop
+//	@Tags			Reservation
+//	@Accept			json
+//	@Produce		json
+//	@Param			id shop			body	integer		true	"shop id_shop"
+//	@Param			id user			body	integer		true	"user id_user"
+//	@Param			id benefit		body	integer		true	"benefit id_benefit"
+//	@Param			date			body	string		true	"reservation date"
+//	@Param			time			body	string		true	"reservation time"
+//	@Param			comment			body	string		false	"reservation comment"
+//	@Success		200
+//	@Router			/reservation [post]
 func (handler *Handler) AddReservation() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		token, err := helper.ExtractClaims(writer, request)
@@ -39,6 +54,16 @@ func (handler *Handler) AddReservation() http.HandlerFunc {
 	}
 }
 
+// Reservation godoc
+//
+//	@Summary		GetExistingReservationForPeriod
+//	@Description	Retrieve all existing reservations for a period in the last 90 days
+//	@Tags			Reservation
+//	@Accept			json
+//	@Produce		json
+//	@Param			id shop			path	integer		true	"shop id_shop"
+//	@Success		200
+//	@Router			/reservation/{id_shop} [get]
 func (handler *Handler) GetExistingReservationForPeriod() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id_shop")
@@ -56,6 +81,15 @@ func (handler *Handler) GetExistingReservationForPeriod() http.HandlerFunc {
 	}
 }
 
+// Reservation godoc
+//
+//	@Summary		GetReservationByUser
+//	@Description	Retrieve all existing reservations for a user
+//	@Tags			Reservation
+//	@Produce		json
+//	@Param			id user		body	integer		true	"user id_user"
+//	@Success		200
+//	@Router			/reservation [get]
 func (handler *Handler) GetReservationByUser() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		token, err := helper.ExtractClaims(writer, request)
@@ -76,6 +110,20 @@ func (handler *Handler) GetReservationByUser() http.HandlerFunc {
 	}
 }
 
+// Reservation godoc
+//
+//	@Summary		UpdateReservation
+//	@Description	Update a reservation in a shop
+//	@Tags			Reservation
+//	@Accept			json
+//	@Produce		json
+//	@Param			id reservation			path	integer		true	"user id_reservation"
+//	@Param			id benefit		body	integer		false	"benefit id_benefit"
+//	@Param			date			body	string		false	"reservation date"
+//	@Param			time			body	string		false	"reservation time"
+//	@Param			comment			body	string		false	"reservation comment"
+//	@Success		200
+//	@Router			/reservation/{id} [patch]
 func (handler *Handler) UpdateReservation() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")
@@ -95,6 +143,16 @@ func (handler *Handler) UpdateReservation() http.HandlerFunc {
 	}
 }
 
+// Reservation godoc
+//
+//	@Summary		DeleteReservation
+//	@Description	Delete a reservation in a shop
+//	@Tags			Reservation
+//	@Accept			json
+//	@Produce		json
+//	@Param			id reservation		path	integer		true	"user id_reservation"
+//	@Success		200
+//	@Router			/reservation/{id} [delete]
 func (handler *Handler) DeleteReservation() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")

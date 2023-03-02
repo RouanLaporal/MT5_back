@@ -9,6 +9,19 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Opening hours godoc
+//
+//	@Summary		AddOpeningHours
+//	@Description	Create a range of opening hours for a shop
+//	@Tags			Opening hours
+//	@Accept			json
+//	@Produce		json
+//	@Param			id day		body	integer		true	"opening id_day"
+//	@Param			id shop		body	integer		true	"opening id_shop"
+//	@Param			open		body	string		true	"opening open"
+//	@Param			close		body	string		true	"opening close"
+//	@Success		200
+//	@Router			/opening-hours [post]
 func (handler *Handler) AddOpeningHours() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		opening_hours := structure.OpeningHours{}
@@ -25,6 +38,16 @@ func (handler *Handler) AddOpeningHours() http.HandlerFunc {
 	}
 }
 
+// Opening hours godoc
+//
+//	@Summary		GetOpeningHoursByShop
+//	@Description	Retrieve opening hours for a shop
+//	@Tags			Opening hours
+//	@Accept			json
+//	@Produce		json
+//	@Param			id shop		path	integer		true	"shop id_shop"
+//	@Success		200
+//	@Router			/opening-hours/{id_shop} [get]
 func (handler *Handler) GetOpeningHoursByShop() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id_shop")
@@ -42,6 +65,16 @@ func (handler *Handler) GetOpeningHoursByShop() http.HandlerFunc {
 	}
 }
 
+// Opening hours godoc
+//
+//	@Summary		UpdateOpeningHours
+//	@Description	Update opening hours for a shop
+//	@Tags			Opening hours
+//	@Accept			json
+//	@Produce		json
+//	@Param			id opening hour		path	integer		true	"opening hour id"
+//	@Success		200
+//	@Router			/opening-hours/{id} [patch]
 func (handler *Handler) UpdateOpeningHours() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")
@@ -60,6 +93,16 @@ func (handler *Handler) UpdateOpeningHours() http.HandlerFunc {
 	}
 }
 
+// Opening hours godoc
+//
+//	@Summary		DeleteOpeningHours
+//	@Description	Delete an opening hours for a shop
+//	@Tags			Opening hours
+//	@Accept			json
+//	@Produce		json
+//	@Param			id opening hour		path	integer		true	"opening hour id"
+//	@Success		200
+//	@Router			/opening-hours/{id} [delete]
 func (handler *Handler) DeleteOpeningHours() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")

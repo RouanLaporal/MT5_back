@@ -73,8 +73,8 @@ func NewHandler(store *database.Store) *Handler {
 	/* Review routes */
 	handler.Get("/review/{id}", handler.GetReviewByShop())
 	handler.Post("/review", middlewareCustom.IsAuthorized(handler.AddReview()))
-	handler.Patch("/review/{id}", handler.UpdateReview())
-	handler.Delete("/review/{id}", handler.DeleteReview())
+	handler.Patch("/review/{id}", middlewareCustom.IsAuthorized(handler.UpdateReview()))
+	handler.Delete("/review/{id}", middlewareCustom.IsAuthorized(handler.DeleteReview()))
 
 	/*Reservation routes*/
 	handler.Post("/reservation", middlewareCustom.IsAuthorized(handler.AddReservation()))
