@@ -15,7 +15,7 @@ type ShopStore struct {
 	*sql.DB
 }
 
-func (shop_store *ShopStore) AddShop(new_shop structure.NewShop) (int, error) {
+func (shop_store *ShopStore) AddShop(new_shop structure.NewShop) (int, error) { //TODo update id_user from token
 	res, err := shop_store.DB.Exec(
 		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		new_shop.Name,
