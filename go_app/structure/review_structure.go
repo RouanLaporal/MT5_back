@@ -8,6 +8,12 @@ type Review struct {
 	Comment  string `json:"comment"`
 }
 
+type ReviewRO struct {
+	IDReview int    `json:"id_review"`
+	Rating   int    `json:"rating"`
+	Comment  string `json:"comment"`
+}
+
 type ReviewStoreInterface interface {
 	GetReviewByShop(id_shop int) ([]Review, error)
 	AddReview(review Review, id_user int) (int, error)

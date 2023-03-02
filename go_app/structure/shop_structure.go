@@ -67,6 +67,26 @@ type ShopsNear struct {
 	Kind string  `json:"kind"`
 }
 
+type ShopRO struct {
+	ID          int           `json:"id"`
+	Name        string        `json:"name"`
+	Address     string        `json:"address"`
+	ZipCode     string        `json:"zip"`
+	City        string        `json:"city"`
+	Country     string        `json:"country"`
+	Phone       string        `json:"phone"`
+	Email       string        `json:"email"`
+	Description string        `json:"description"`
+	Openings    []ShowOpening `json:"opening"`
+	Benefits    []BenefitRO   `json:"benefits"`
+	Reviews     []ReviewRO    `json:"reviews"`
+	// Lat         string `json:"lat"`
+	// Long        string `json:"long"`
+	// CollaboratorName   string `json:"collaborator_name"`
+	// CollaboratorPhone  string `json:"collaborator_phone"`
+	// CollaboratorEmail  string `json:"collaborator_email"`
+}
+
 type ShopsNearReturn struct {
 	ID              int     `json:"id"`
 	Name            string  `json:"name"`
@@ -89,5 +109,5 @@ type ShopStoreInterface interface {
 	DeleteShop(id int) error
 	UpdateShop(id int, item Shop) error
 	GetAllShopNear(lat float64, long float64, kind string) ([]ShopsNearReturn, error)
-	GetShopById(id int) (Shop, error)
+	GetShopById(id int) (ShopRO, error)
 }

@@ -149,3 +149,7 @@ INSERT INTO benefits (id_shop, name, description, duration, price) VALUES
 (5, 'Rendez vous tatouage 2 heures', "Le montant indiqué correspond à l'acompte le paiement intégral se fera sur place", '2 heures', '80'),
 (1, 'Contours', "Contours d'une coupe de cheveux seulement", '5 minutes', '5');
 */
+
+SELECT shops.id_shop, shops.name, zip_code, city, country, phone, email, shops.description, id_user, id_benefit, benefits.name, benefits.duration, benefits.description  FROM shops RIGHT JOIN benefits ON shops.id_shop = benefits.id_shop
+where shops.id_shop = 8;
+

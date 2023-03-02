@@ -234,12 +234,18 @@ func (shop_store *ShopStore) GetAllShopNear(lat float64, long float64, kind stri
 	return shops, nil
 }
 
-func (shop_store *ShopStore) GetShopById(id int) (structure.Shop, error) {
-	var shop structure.Shop
+func (shop_store *ShopStore) GetShopById(id int) (structure.ShopRO, error) {
+	var shop structure.ShopRO
+	var openings []structure.ShowOpening
+	var benefits []structure.BenefitRO
+	var reviews []structure.ReviewRO
 
-	rows := shop_store.DB.QueryRow("SELECT id_shop, name, zip_code, city, country, phone, email, description, id_user FROM shops where id_shop = ?", id)
-	switch err := rows.Scan(&shop.ID,
+	var sqlStatement = "SELECT id_shop,name,address,zip_code,city,country,phone,email,description FROM shops WHERE id_shop = ?"
+	rows := shop_store.DB.QueryRow(sqlStatement, id)
+	err := rows.Scan(
+		&shop.ID,
 		&shop.Name,
+		&shop.Address,
 		&shop.ZipCode,
 		&shop.City,
 		// &shop.Lat,
@@ -247,13 +253,64 @@ func (shop_store *ShopStore) GetShopById(id int) (structure.Shop, error) {
 		&shop.Country,
 		&shop.Phone,
 		&shop.Email,
-		&shop.Description,
-		&shop.UserID); err {
-	case sql.ErrNoRows:
-		return shop, err
-	case nil:
-		return shop, nil
-	default:
-		return shop, err
+		&shop.Description)
+	if err != nil {
+		return structure.ShopRO{}, err
 	}
+
+	row, err := shop_store.DB.Query("SELECT open, close, id_day FROM openings where id_shop = ?", id)
+	if err != nil {
+		return structure.ShopRO{}, err
+	}
+	defer row.Close()
+
+	for row.Next() {
+		var opening structure.ShowOpening
+		if err = row.Scan(
+			&opening.Open,
+			&opening.Close,
+			&opening.DayID); err != nil {
+			return structure.ShopRO{}, err
+		}
+		openings = append(openings, opening)
+	}
+	row, err = shop_store.DB.Query("SELECT id_benefit, name, description, duration, price FROM benefits where id_shop = ?", id)
+	if err != nil {
+		return structure.ShopRO{}, err
+	}
+	defer row.Close()
+
+	for row.Next() {
+		var benefit structure.BenefitRO
+		if err = row.Scan(
+			&benefit.IDBenefit,
+			&benefit.Name,
+			&benefit.Description,
+			&benefit.Duration,
+			&benefit.Price); err != nil {
+			return structure.ShopRO{}, err
+		}
+		benefits = append(benefits, benefit)
+	}
+	row, err = shop_store.DB.Query("SELECT id_review, rating, comment FROM reviews where id_shop = ?", id)
+	if err != nil {
+		return structure.ShopRO{}, err
+	}
+	defer row.Close()
+
+	for row.Next() {
+		var review structure.ReviewRO
+		if err = row.Scan(
+			&review.IDReview,
+			&review.Rating,
+			&review.Comment); err != nil {
+			return structure.ShopRO{}, err
+		}
+		reviews = append(reviews, review)
+	}
+	shop.Reviews = reviews
+	shop.Benefits = benefits
+	shop.Openings = openings
+
+	return shop, err
 }
