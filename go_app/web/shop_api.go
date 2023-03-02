@@ -48,34 +48,34 @@ func (h *Handler) AddShopAndUser() http.HandlerFunc {
 	}
 }
 
-func (h *Handler) AddShop() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		token, err := helper.ExtractClaims(writer, request)
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		shop := structure.NewShop{}
-		json.NewDecoder(request.Body).Decode(&shop)
+// func (h *Handler) AddShop() http.HandlerFunc {
+// 	return func(writer http.ResponseWriter, request *http.Request) {
+// 		token, err := helper.ExtractClaims(writer, request)
+// 		if err != nil {
+// 			http.Error(writer, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
+// 		shop := structure.NewShop{}
+// 		json.NewDecoder(request.Body).Decode(&shop)
 
-		id, err := h.Store.ShopStoreInterface.AddShop(shop, token.IDUser)
+// 		id, err := h.Store.ShopStoreInterface.AddShop(shop, token.IDUser)
 
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
+// 		if err != nil {
+// 			http.Error(writer, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-			NewShop int    `json:"newShop"`
-		}{
-			Status:  "success",
-			Message: "Nouveau commentaire ajouté avec succès",
-			NewShop: id,
-		})
-	}
-}
+// 		json.NewEncoder(writer).Encode(struct {
+// 			Status  string `json:"status"`
+// 			Message string `json:"message"`
+// 			NewShop int    `json:"newShop"`
+// 		}{
+// 			Status:  "success",
+// 			Message: "Nouveau commentaire ajouté avec succès",
+// 			NewShop: id,
+// 		})
+// 	}
+// }
 
 func (handler *Handler) GetAllShopByKindAndCity() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {

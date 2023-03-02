@@ -29,12 +29,12 @@ func (shop_store *ShopStore) AddShopAndUser(new_shop structure.NewShopAndUser) e
 		return err
 	}
 	res, err = shop_store.DB.Exec(
-		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO shops (name, zip_code, city, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		new_shop.Name,
 		new_shop.ZipCode,
 		new_shop.City,
-		new_shop.Lat,
-		new_shop.Long,
+		// new_shop.Lat,
+		// new_shop.Long,
 		new_shop.Country,
 		new_shop.Phone,
 		new_shop.Email,
@@ -60,42 +60,42 @@ func (shop_store *ShopStore) AddShopAndUser(new_shop structure.NewShopAndUser) e
 	return nil
 }
 
-func (shop_store *ShopStore) AddShop(new_shop structure.NewShop, id_user int) (int, error) {
-	res, err := shop_store.DB.Exec(
-		"INSERT INTO shops (name, zip_code, city, latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		new_shop.Name,
-		new_shop.ZipCode,
-		new_shop.City,
-		new_shop.Lat,
-		new_shop.Long,
-		new_shop.Country,
-		new_shop.Phone,
-		new_shop.Email,
-		new_shop.Description,
-		id_user)
-	if err != nil {
-		return 0, err
-	}
+// func (shop_store *ShopStore) AddShop(new_shop structure.NewShop, id_user int) (int, error) {
+// 	res, err := shop_store.DB.Exec(
+// 		"INSERT INTO shops (name, zip_code, city, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+// 		new_shop.Name,
+// 		new_shop.ZipCode,
+// 		new_shop.City,
+// 		// new_shop.Lat,
+// 		// new_shop.Long,
+// 		new_shop.Country,
+// 		new_shop.Phone,
+// 		new_shop.Email,
+// 		new_shop.Description,
+// 		id_user)
+// 	if err != nil {
+// 		return 0, err
+// 	}
 
-	id, err := res.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-	for _, element := range new_shop.KindID {
-		_, err := shop_store.DB.Exec(
-			"INSERT INTO shop_kind (id_shop, id_kind) VALUES (?,?)",
-			id,
-			element)
-		if err != nil {
-			return 0, err
-		}
-	}
-	return int(id), nil
-}
+// 	id, err := res.LastInsertId()
+// 	if err != nil {
+// 		return 0, err
+// 	}
+// 	for _, element := range new_shop.KindID {
+// 		_, err := shop_store.DB.Exec(
+// 			"INSERT INTO shop_kind (id_shop, id_kind) VALUES (?,?)",
+// 			id,
+// 			element)
+// 		if err != nil {
+// 			return 0, err
+// 		}
+// 	}
+// 	return int(id), nil
+// }
 
 func (shop_store *ShopStore) GetAllShopByKindAndCity(id_kind int, city string) ([]structure.Shop, error) {
 	var shops []structure.Shop
-	rows, err := shop_store.DB.Query("SELECT shops.id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops  INNER JOIN shop_kind on shop_kind.id_shop = shops.id_shop WHERE shop_kind.id_kind = ? AND city = ? ", id_kind, city)
+	rows, err := shop_store.DB.Query("SELECT shops.id_shop, name, zip_code, city, country, phone, email, description, id_user FROM shops  INNER JOIN shop_kind on shop_kind.id_shop = shops.id_shop WHERE shop_kind.id_kind = ? AND city = ? ", id_kind, city)
 	if err != nil {
 		return []structure.Shop{}, err
 	}
@@ -106,8 +106,8 @@ func (shop_store *ShopStore) GetAllShopByKindAndCity(id_kind int, city string) (
 			&shop.Name,
 			&shop.ZipCode,
 			&shop.City,
-			&shop.Lat,
-			&shop.Long,
+			// &shop.Lat,
+			// &shop.Long,
 			&shop.Country,
 			&shop.Phone,
 			&shop.Email,
@@ -140,8 +140,6 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 	name = ?,
 	zip_code = ?,
 	city = ?,
-	latitude = ?,
-	longitude = ?,
 	country = ?,
 	phone = ?,
 	email = ?,
@@ -152,8 +150,8 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 		updated_shop.Name,
 		updated_shop.ZipCode,
 		updated_shop.City,
-		updated_shop.Lat,
-		updated_shop.Long,
+		// updated_shop.Lat,
+		// updated_shop.Long,
 		updated_shop.Country,
 		updated_shop.Phone,
 		updated_shop.Email,
@@ -169,7 +167,7 @@ func (shop_store *ShopStore) UpdateShop(id_shop int, updated_shop structure.Shop
 func (shop_store *ShopStore) GetAllShopByUser(id_user int) ([]structure.Shop, error) {
 	var shops []structure.Shop
 
-	rows, err := shop_store.DB.Query("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops where id_user = ?", id_user)
+	rows, err := shop_store.DB.Query("SELECT id_shop, name, zip_code, city, country, phone, email, description, id_user FROM shops where id_user = ?", id_user)
 	if err != nil {
 		return []structure.Shop{}, err
 	}
@@ -182,8 +180,8 @@ func (shop_store *ShopStore) GetAllShopByUser(id_user int) ([]structure.Shop, er
 			&shop.Name,
 			&shop.ZipCode,
 			&shop.City,
-			&shop.Lat,
-			&shop.Long,
+			// &shop.Lat,
+			// &shop.Long,
 			&shop.Country,
 			&shop.Phone,
 			&shop.Email,
@@ -239,13 +237,13 @@ func (shop_store *ShopStore) GetAllShopNear(lat float64, long float64, kind stri
 func (shop_store *ShopStore) GetShopById(id int) (structure.Shop, error) {
 	var shop structure.Shop
 
-	rows := shop_store.DB.QueryRow("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops where id_shop = ?", id)
+	rows := shop_store.DB.QueryRow("SELECT id_shop, name, zip_code, city, country, phone, email, description, id_user FROM shops where id_shop = ?", id)
 	switch err := rows.Scan(&shop.ID,
 		&shop.Name,
 		&shop.ZipCode,
 		&shop.City,
-		&shop.Lat,
-		&shop.Long,
+		// &shop.Lat,
+		// &shop.Long,
 		&shop.Country,
 		&shop.Phone,
 		&shop.Email,

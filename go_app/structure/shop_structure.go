@@ -25,12 +25,13 @@ type NewShop struct {
 }
 
 type NewShopAndUser struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	ZipCode     string `json:"zip"`
-	City        string `json:"city"`
-	Lat         string `json:"lat"`
-	Long        string `json:"long"`
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+	ZipCode string `json:"zip"`
+	City    string `json:"city"`
+	// Lat         string `json:"lat"`
+	// Long        string `json:"long"`
 	Country     string `json:"country"`
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
@@ -46,30 +47,18 @@ type NewShopAndUser struct {
 }
 
 type Shop struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	ZipCode     string `json:"zip"`
-	City        string `json:"city"`
-	Lat         string `json:"lat"`
-	Long        string `json:"long"`
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+	ZipCode string `json:"zip"`
+	City    string `json:"city"`
+	// Lat         string `json:"lat"`
+	// Long        string `json:"long"`
 	Country     string `json:"country"`
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
 	Description string `json:"description"`
 	UserID      int    `json:"id_user"`
-}
-
-type ShopRO struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	ZipCode     string `json:"zip"`
-	City        string `json:"city"`
-	Lat         string `json:"lat"`
-	Long        string `json:"long"`
-	Country     string `json:"country"`
-	Phone       string `json:"phone"`
-	Email       string `json:"email"`
-	Description string `json:"description"`
 }
 
 type ShopsNear struct {
@@ -95,7 +84,7 @@ type ShopsNearReturn struct {
 type ShopStoreInterface interface {
 	GetAllShopByKindAndCity(id_kind int, city string) ([]Shop, error)
 	GetAllShopByUser(id_user int) ([]Shop, error)
-	AddShop(shop NewShop, id_user int) (int, error)
+	// AddShop(shop NewShop, id_user int) (int, error)
 	AddShopAndUser(shop NewShopAndUser) error
 	DeleteShop(id int) error
 	UpdateShop(id int, item Shop) error
