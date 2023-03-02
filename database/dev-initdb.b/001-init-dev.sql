@@ -33,13 +33,6 @@ CREATE TABLE IF NOT EXISTS kinds (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO kinds (name) VALUES 
-('Coiffeurs'),
-('Barbiers'),
-('Manucure'),
-('Instituts de beauté'),
-('Tatoueurs');
-
 -- Table: Etablissement
 CREATE TABLE IF NOT EXISTS shops (
     id_shop INT NOT NULL AUTO_INCREMENT,
@@ -121,4 +114,11 @@ CREATE TABLE IF NOT EXISTS reservations (
     FOREIGN KEY (id_user) REFERENCES users(id_user) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (id_benefit) REFERENCES benefits(id_benefit) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+INSERT INTO kinds (name) VALUES 
+('Coiffeurs'),
+('Barbiers'),
+('Manucure'),
+('Instituts de beauté'),
+('Tatoueurs');
 
