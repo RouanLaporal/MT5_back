@@ -133,3 +133,20 @@ func (handler *Handler) GetAllShopNear() http.HandlerFunc {
 		}
 	}
 }
+
+func (handler *Handler) GetShop() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+		writer.Header().Set("Content-Type", "application/json")
+		shop, err := handler.Store.GetShopById(id)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		}
+		err = json.NewEncoder(writer).Encode(shop)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}

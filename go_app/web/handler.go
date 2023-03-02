@@ -34,11 +34,11 @@ func NewHandler(store *database.Store) *Handler {
 
 	handler.Post("/new-shop", middlewareCustom.IsAuthorized(handler.AddShop()))
 	handler.Get("/get-shop-by-user", middlewareCustom.IsAuthorized(handler.GetAllShopByUser()))
+	handler.Get("/shop/{id}", handler.GetShop())
 	handler.Delete("/shop/{id}", middlewareCustom.IsAuthorized(handler.DeleteShop()))
 	handler.Patch("/shop/{id}", middlewareCustom.IsAuthorized(handler.UpdateShop()))
 
 	handler.Get("/shops/nearby/{lng}/{lat}/{kind}", handler.GetAllShopNear())
-
 	handler.Get("/get-shop/{id_kind}/{city}", handler.GetAllShopByKindAndCity())
 	handler.Get("/kinds", handler.GetKind())
 

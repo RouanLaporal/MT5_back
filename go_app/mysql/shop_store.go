@@ -190,3 +190,27 @@ func (shop_store *ShopStore) GetAllShopNear(lat float64, long float64, kind stri
 
 	return shops, nil
 }
+
+func (shop_store *ShopStore) GetShopById(id int) (structure.Shop, error) {
+	var shop structure.Shop
+
+	rows := shop_store.DB.QueryRow("SELECT id_shop, name, zip_code, city, latitude, longitude, country, phone, email, description, id_user FROM shops where id_shop = ?", id)
+	switch err := rows.Scan(&shop.ID,
+		&shop.Name,
+		&shop.ZipCode,
+		&shop.City,
+		&shop.Lat,
+		&shop.Long,
+		&shop.Country,
+		&shop.Phone,
+		&shop.Email,
+		&shop.Description,
+		&shop.UserID); err {
+	case sql.ErrNoRows:
+		return shop, err
+	case nil:
+		return shop, nil
+	default:
+		return shop, err
+	}
+}
