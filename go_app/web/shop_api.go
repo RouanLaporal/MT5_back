@@ -10,34 +10,72 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func (h *Handler) AddShop() http.HandlerFunc {
+func (h *Handler) AddShopAndUser() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		token, err := helper.ExtractClaims(writer, request)
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		shop := structure.NewShop{}
+		shop := structure.NewShopAndUser{}
 		json.NewDecoder(request.Body).Decode(&shop)
-
-		id, err := h.Store.ShopStoreInterface.AddShop(shop, token.IDUser)
+		_, err := h.Store.UserStoreInterface.GetUserByEmail(shop.UserEmail)
+		if err == nil {
+			http.Error(writer, "Email already in use", http.StatusBadRequest)
+			return
+		}
+		err = h.Store.ShopStoreInterface.AddShopAndUser(shop)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		json.NewEncoder(writer).Encode(struct {
-			Status  string `json:"status"`
-			Message string `json:"message"`
-			NewShop int    `json:"newShop"`
-		}{
-			Status:  "success",
-			Message: "Nouveau commentaire ajouté avec succès",
-			NewShop: id,
-		})
+		validToken, err := helper.GenerateJWT(shop.UserID, shop.UserEmail, "trader")
+		if err != nil {
+			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
+			writer.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(writer).Encode(err)
+			return
+		}
+
+		var authenticationUser structure.AuthUser
+
+		authenticationUser.FirstName = shop.FirstName
+		authenticationUser.LastName = shop.LastName
+		authenticationUser.Email = shop.UserEmail
+		authenticationUser.Phone = shop.UserPhone
+		authenticationUser.Role = "trader"
+		authenticationUser.TokenString = validToken
+
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode(authenticationUser)
 	}
 }
+
+// func (h *Handler) AddShop() http.HandlerFunc {
+// 	return func(writer http.ResponseWriter, request *http.Request) {
+// 		token, err := helper.ExtractClaims(writer, request)
+// 		if err != nil {
+// 			http.Error(writer, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
+// 		shop := structure.NewShop{}
+// 		json.NewDecoder(request.Body).Decode(&shop)
+
+// 		id, err := h.Store.ShopStoreInterface.AddShop(shop, token.IDUser)
+
+// 		if err != nil {
+// 			http.Error(writer, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
+
+// 		json.NewEncoder(writer).Encode(struct {
+// 			Status  string `json:"status"`
+// 			Message string `json:"message"`
+// 			NewShop int    `json:"newShop"`
+// 		}{
+// 			Status:  "success",
+// 			Message: "Nouveau commentaire ajouté avec succès",
+// 			NewShop: id,
+// 		})
+// 	}
+// }
 
 func (handler *Handler) GetAllShopByKindAndCity() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
