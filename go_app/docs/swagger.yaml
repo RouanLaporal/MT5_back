@@ -1,0 +1,32 @@
+info:
+  contact: {}
+  title: Agendly
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: user email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: user password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Log an user
+      tags:
+      - Auth
+swagger: "2.0"

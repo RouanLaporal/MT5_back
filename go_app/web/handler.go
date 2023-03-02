@@ -5,9 +5,12 @@ import (
 
 	middlewareCustom "back_project/middleware"
 
+	_ "back_project/docs"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 func NewHandler(store *database.Store) *Handler {
@@ -25,6 +28,9 @@ func NewHandler(store *database.Store) *Handler {
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 	}))
 
+	handler.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8097/swagger/doc.json"), //The url pointing to API definition
+	))
 	/* Authentification route */
 
 	handler.Post("/auth/login", handler.SignIn())

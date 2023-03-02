@@ -7,6 +7,17 @@ import (
 	"net/http"
 )
 
+// Login godoc
+//
+//	@Summary		Log an user
+//	@Description	get string by ID
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			email		body	string	true	"user email"
+//	@Param			password	body	string	true	"user password"
+//	@Success		200
+//	@Router			/auth/login [post]
 func (h *Handler) SignIn() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		authentication := structure.Authentication{}
