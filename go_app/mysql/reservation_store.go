@@ -62,7 +62,7 @@ func (reservation_store *ReservationStore) GetExistingReservationForPeriod(id_sh
 func (reservation_store *ReservationStore) GetReservationByUser(id_user int) ([]structure.ReservationRO, error) {
 	var reservations []structure.ReservationRO
 
-	rows, err := reservation_store.DB.Query("SELECT reservations.id_shop, shops.name, reservations.id_benefit, benefits.name, date, time, comment FROM reservations RIGHT JOIN shops ON reservations.id_shop = shops.id_shop LEFT JOIN benefits ON reservations.id_benefit = benefits.id_benefit  where reservations.id_user = ?", id_user)
+	rows, err := reservation_store.DB.Query("SELECT id_reservation, reservations.id_shop, shops.name, reservations.id_benefit, benefits.name, date, time, comment FROM reservations RIGHT JOIN shops ON reservations.id_shop = shops.id_shop LEFT JOIN benefits ON reservations.id_benefit = benefits.id_benefit  where reservations.id_user = ?", id_user)
 	if err != nil {
 		return []structure.ReservationRO{}, err
 	}
@@ -71,6 +71,7 @@ func (reservation_store *ReservationStore) GetReservationByUser(id_user int) ([]
 	for rows.Next() {
 		var reservation structure.ReservationRO
 		if err = rows.Scan(
+			&reservation.ID,
 			&reservation.ShopID,
 			&reservation.ShopName,
 			&reservation.BenefitID,
