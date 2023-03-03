@@ -18,6 +18,7 @@ type UpdateReservation struct {
 }
 
 type ReservationRO struct {
+	ID          int    `json:"id_reservation"`
 	ShopID      int    `json:"id_shop"`
 	BenefitID   int    `json:"id_benefit"`
 	ShopName    string `json:"shop_name"`

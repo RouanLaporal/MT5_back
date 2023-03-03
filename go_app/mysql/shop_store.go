@@ -202,7 +202,7 @@ func (shop_store *ShopStore) GetAllShopByUser(id_user int) ([]structure.Shop, er
 
 func (shop_store *ShopStore) GetAllShopNear(lat float64, long float64, kind string) ([]structure.ShopsNearReturn, error) {
 	var shops []structure.ShopsNearReturn
-	rows, err := shop_store.DB.Query("SELECT id_shop, shops.name, zip_code, city, latitude, longitude, country, phone, email, description, ST_Distance_Sphere( point (?, ?), point(longitude, latitude)) * .000621371192 AS distance_in_miles FROM shops INNER JOIN kinds ON shops.id_kind = kinds.id_kind WHERE kinds.name = ? having distance_in_miles <= 15 order by distance_in_miles asc", long, lat, kind)
+	rows, err := shop_store.DB.Query("SELECT id_shop, shops.name, address, zip_code, city, latitude, longitude, country, phone, email, description, ST_Distance_Sphere( point (?, ?), point(longitude, latitude)) * .000621371192 AS distance_in_miles FROM shops INNER JOIN kinds ON shops.id_kind = kinds.id_kind WHERE kinds.name = ? having distance_in_miles <= 15 order by distance_in_miles asc", long, lat, kind)
 	if err != nil {
 		return []structure.ShopsNearReturn{}, err
 	}
@@ -213,6 +213,7 @@ func (shop_store *ShopStore) GetAllShopNear(lat float64, long float64, kind stri
 		if err = rows.Scan(
 			&shop.ID,
 			&shop.Name,
+			&shop.Address,
 			&shop.ZipCode,
 			&shop.City,
 			&shop.Lat,

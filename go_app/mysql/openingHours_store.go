@@ -34,17 +34,26 @@ func (openingHours_store *OpeningHoursStore) AddOpeningHours(new_openingHours st
 	return int(id), nil
 }
 
-func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) (structure.ShowOpening, error) {
-	var show_opening structure.ShowOpening
-	rows := openingHours_store.DB.QueryRow("SELECT open, close, id_day FROM openings WHERE id_shop = ?", id_shop)
-	switch err := rows.Scan(&show_opening.Open, &show_opening.Close, &show_opening.DayID); err {
-	case sql.ErrNoRows:
-		return show_opening, err
-	case nil:
-		return show_opening, nil
-	default:
-		return show_opening, err
+func (openingHours_store *OpeningHoursStore) GetOpeningHoursByShop(id_shop int) ([]structure.ShowOpening, error) {
+	var openings []structure.ShowOpening
+	row, err := openingHours_store.DB.Query("SELECT open, close, id_day FROM openings where id_shop = ?", id_shop)
+	if err != nil {
+		return []structure.ShowOpening{}, err
 	}
+	defer row.Close()
+
+	for row.Next() {
+		var opening structure.ShowOpening
+		if err = row.Scan(
+			&opening.Open,
+			&opening.Close,
+			&opening.DayID); err != nil {
+			return []structure.ShowOpening{}, err
+		}
+		openings = append(openings, opening)
+	}
+
+	return openings, err
 }
 
 func (openingHours_store *OpeningHoursStore) UpdateOpeningHours(id int, updated_openingHours structure.OpeningHours) error {

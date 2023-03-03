@@ -16,7 +16,7 @@ type ShowOpening struct {
 
 type OpeningHoursStoreInterface interface {
 	AddOpeningHours(opening_hours OpeningHours) (int, error)
-	GetOpeningHoursByShop(id_shop int) (ShowOpening, error)
+	GetOpeningHoursByShop(id_shop int) ([]ShowOpening, error)
 	UpdateOpeningHours(id int, opening_hours OpeningHours) error
 	DeleteOpeningHours(id int) error
 }

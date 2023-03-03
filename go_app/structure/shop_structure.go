@@ -90,6 +90,7 @@ type ShopRO struct {
 type ShopsNearReturn struct {
 	ID              int     `json:"id"`
 	Name            string  `json:"name"`
+	Address         string  `json:"address"`
 	ZipCode         string  `json:"zip"`
 	City            string  `json:"city"`
 	Lat             float64 `json:"lat"`
