@@ -4,6 +4,7 @@ import (
 	"back_project/helper"
 	"back_project/structure"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -238,6 +239,8 @@ func (handler *Handler) GetAllShopNear() http.HandlerFunc {
 		lng, _ := strconv.ParseFloat(QueryLng, 64)
 		lat, _ := strconv.ParseFloat(QueryLat, 64)
 		kind := QueryKind
+		fmt.Println(lng)
+		fmt.Println(lat)
 		writer.Header().Set("Content-Type", "application/json")
 		shops, err := handler.ShopStoreInterface.GetAllShopNear(lat, lng, kind)
 		if err != nil {
