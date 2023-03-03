@@ -1,0 +1,687 @@
+info:
+  contact: {}
+  title: Agendly
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: user email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: user password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Log an user
+      tags:
+      - Auth
+  /get-shop-by-user:
+    get:
+      description: Retrieve all shop by user
+      parameters:
+      - description: user id_user
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetAllShopByUser
+      tags:
+      - Shop
+  /get-shop/{id_kind}/{city}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all shop by kind and city
+      parameters:
+      - description: shop city
+        in: path
+        name: city
+        required: true
+        type: string
+      - description: kind id_kind
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetAllShopByKindAndCity
+      tags:
+      - Shop
+  /new-shop:
+    post:
+      consumes:
+      - application/json
+      description: create a shop and its informations
+      parameters:
+      - description: shop name
+        in: body
+        name: name
+        schema:
+          type: string
+      - description: shop zip_code
+        in: body
+        name: zip_code
+        schema:
+          type: string
+      - description: shop city
+        in: body
+        name: city
+        schema:
+          type: string
+      - description: shop lat
+        in: body
+        name: lat
+        schema:
+          type: string
+      - description: shop long
+        in: body
+        name: long
+        schema:
+          type: string
+      - description: shop country
+        in: body
+        name: country
+        schema:
+          type: string
+      - description: shop phone
+        in: body
+        name: phone
+        schema:
+          type: string
+      - description: shop email
+        in: body
+        name: email
+        schema:
+          type: string
+      - description: shop description
+        in: body
+        name: description
+        schema:
+          type: string
+      - description: kind id_kind
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - description: user id_user
+        in: body
+        name: id_user
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: AddShop
+      tags:
+      - Shop
+  /opening-hours:
+    post:
+      consumes:
+      - application/json
+      description: Create a range of opening hours for a shop
+      parameters:
+      - description: opening id_day
+        in: body
+        name: day
+        required: true
+        schema:
+          type: integer
+      - description: opening id_shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          type: integer
+      - description: opening open
+        in: body
+        name: open
+        required: true
+        schema:
+          type: string
+      - description: opening close
+        in: body
+        name: close
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: AddOpeningHours
+      tags:
+      - Opening hours
+  /opening-hours/{id_shop}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve opening hours for a shop
+      parameters:
+      - description: shop id_shop
+        in: path
+        name: shop
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetOpeningHoursByShop
+      tags:
+      - Opening hours
+  /opening-hours/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an opening hours for a shop
+      parameters:
+      - description: opening hour id
+        in: path
+        name: hour
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: DeleteOpeningHours
+      tags:
+      - Opening hours
+    patch:
+      consumes:
+      - application/json
+      description: Update opening hours for a shop
+      parameters:
+      - description: opening hour id
+        in: path
+        name: hour
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdateOpeningHours
+      tags:
+      - Opening hours
+  /reservation:
+    get:
+      description: Retrieve all existing reservations for a user
+      parameters:
+      - description: user id_user
+        in: body
+        name: user
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetReservationByUser
+      tags:
+      - Reservation
+    post:
+      consumes:
+      - application/json
+      description: Create a reservation for a shop
+      parameters:
+      - description: shop id_shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          type: integer
+      - description: user id_user
+        in: body
+        name: user
+        required: true
+        schema:
+          type: integer
+      - description: benefit id_benefit
+        in: body
+        name: benefit
+        required: true
+        schema:
+          type: integer
+      - description: reservation date
+        in: body
+        name: date
+        required: true
+        schema:
+          type: string
+      - description: reservation time
+        in: body
+        name: time
+        required: true
+        schema:
+          type: string
+      - description: reservation comment
+        in: body
+        name: comment
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: AddReservation
+      tags:
+      - Reservation
+  /reservation/{id_shop}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all existing reservations for a period in the last 90
+        days
+      parameters:
+      - description: shop id_shop
+        in: path
+        name: shop
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetExistingReservationForPeriod
+      tags:
+      - Reservation
+  /reservation/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a reservation in a shop
+      parameters:
+      - description: user id_reservation
+        in: path
+        name: reservation
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: DeleteReservation
+      tags:
+      - Reservation
+    patch:
+      consumes:
+      - application/json
+      description: Update a reservation in a shop
+      parameters:
+      - description: user id_reservation
+        in: path
+        name: reservation
+        required: true
+        type: integer
+      - description: benefit id_benefit
+        in: body
+        name: benefit
+        schema:
+          type: integer
+      - description: reservation date
+        in: body
+        name: date
+        schema:
+          type: string
+      - description: reservation time
+        in: body
+        name: time
+        schema:
+          type: string
+      - description: reservation comment
+        in: body
+        name: comment
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdateReservation
+      tags:
+      - Reservation
+  /review:
+    post:
+      consumes:
+      - application/json
+      description: Create a review for a shop
+      parameters:
+      - description: shop id_shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          type: integer
+      - description: user id_user
+        in: body
+        name: user
+        required: true
+        schema:
+          type: integer
+      - description: review rating
+        in: body
+        name: rating
+        schema:
+          type: string
+      - description: review comment
+        in: body
+        name: comment
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: AddReview
+      tags:
+      - Review
+  /review/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a review for a shop
+      parameters:
+      - description: review id_review
+        in: path
+        name: review
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: DeleteReview
+      tags:
+      - Review
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all reviews for a shop
+      parameters:
+      - description: shop id_shop
+        in: path
+        name: shop
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetReviewByShop
+      tags:
+      - Review
+    patch:
+      consumes:
+      - application/json
+      description: Update a review for a shop
+      parameters:
+      - description: review id_review
+        in: path
+        name: review
+        required: true
+        type: integer
+      - description: review rating
+        in: body
+        name: rating
+        schema:
+          type: string
+      - description: review comment
+        in: body
+        name: comment
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdateReview
+      tags:
+      - Review
+  /shop/{id_shop}:
+    delete:
+      description: Delete a shop by its id
+      parameters:
+      - description: shop id_shop
+        in: path
+        name: id_shop
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: DeleteShop
+      tags:
+      - Shop
+  /shop/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all shop by id shope
+      parameters:
+      - description: shop id_shop
+        in: path
+        name: shop
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetShop
+      tags:
+      - Shop
+    patch:
+      consumes:
+      - application/json
+      description: Update a shop by its id
+      parameters:
+      - description: shop name
+        in: body
+        name: name
+        schema:
+          type: string
+      - description: shop zip_code
+        in: body
+        name: zip_code
+        schema:
+          type: string
+      - description: shop city
+        in: body
+        name: city
+        schema:
+          type: string
+      - description: shop lat
+        in: body
+        name: lat
+        schema:
+          type: string
+      - description: shop long
+        in: body
+        name: long
+        schema:
+          type: string
+      - description: shop country
+        in: body
+        name: country
+        schema:
+          type: string
+      - description: shop phone
+        in: body
+        name: phone
+        schema:
+          type: string
+      - description: shop email
+        in: body
+        name: email
+        schema:
+          type: string
+      - description: shop description
+        in: body
+        name: description
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdateShop
+      tags:
+      - Shop
+  /shops/nearby/{lng}/{lat}/{kind}:
+    get:
+      description: Retrieve all shop near the area defined by latitude and longitude
+      parameters:
+      - description: shop long
+        in: path
+        name: lng
+        required: true
+        type: integer
+      - description: shop lat
+        in: path
+        name: lat
+        required: true
+        type: integer
+      - description: kind id_kind
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetAllShopNear
+      tags:
+      - Shop
+  /user/delete-profile:
+    delete:
+      description: Delete a user from database with its id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: DeleteUser
+      tags:
+      - User
+  /user/update-password:
+    patch:
+      consumes:
+      - application/json
+      description: Update password of an user with its token, so we can change the
+        password with the email
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdatePassword
+      tags:
+      - User
+  /user/update-profile:
+    patch:
+      consumes:
+      - application/json
+      description: get user information by ID and modify this user
+      parameters:
+      - description: user firstName
+        in: body
+        name: firstName
+        required: true
+        schema:
+          type: string
+      - description: user lastName
+        in: body
+        name: lastName
+        required: true
+        schema:
+          type: string
+      - description: user phone
+        in: body
+        name: phone
+        required: true
+        schema:
+          type: string
+      - description: user email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: UpdateUser
+      tags:
+      - User
+  /user/verify-password:
+    post:
+      consumes:
+      - application/json
+      description: Verify password of an user with its token, so we retrive the user
+        with the email and password
+      parameters:
+      - description: user email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: VerifyPassword
+      tags:
+      - User
+swagger: "2.0"

@@ -10,6 +10,19 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Review godoc
+//
+//	@Summary		AddReview
+//	@Description	Create a review for a shop
+//	@Tags			Review
+//	@Accept			json
+//	@Produce		json
+//	@Param			id shop			body	integer		true	"shop id_shop"
+//	@Param			id user			body	integer		true	"user id_user"
+//	@Param			rating			body	string		false	"review rating"
+//	@Param			comment			body	string		false	"review comment"
+//	@Success		200
+//	@Router			/review [post]
 func (h *Handler) AddReview() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		token, err := helper.ExtractClaims(writer, request)
@@ -39,6 +52,16 @@ func (h *Handler) AddReview() http.HandlerFunc {
 	}
 }
 
+// Review godoc
+//
+//	@Summary		GetReviewByShop
+//	@Description	Retrieve all reviews for a shop
+//	@Tags			Review
+//	@Accept			json
+//	@Produce		json
+//	@Param			id shop		path	integer		true	"shop id_shop"
+//	@Success		200
+//	@Router			/review/{id} [get]
 func (h *Handler) GetReviewByShop() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")
@@ -57,6 +80,18 @@ func (h *Handler) GetReviewByShop() http.HandlerFunc {
 	}
 }
 
+// Review godoc
+//
+//	@Summary		UpdateReview
+//	@Description	Update a review for a shop
+//	@Tags			Review
+//	@Accept			json
+//	@Produce		json
+//	@Param			id review		path	integer		true	"review id_review"
+//	@Param			rating			body	string		false	"review rating"
+//	@Param			comment			body	string		false	"review comment"
+//	@Success		200
+//	@Router			/review/{id} [patch]
 func (h *Handler) UpdateReview() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")
@@ -81,6 +116,16 @@ func (h *Handler) UpdateReview() http.HandlerFunc {
 	}
 }
 
+// Review godoc
+//
+//	@Summary		DeleteReview
+//	@Description	Delete a review for a shop
+//	@Tags			Review
+//	@Accept			json
+//	@Produce		json
+//	@Param			id review	path	integer		true	"review id_review"
+//	@Success		200
+//	@Router			/review/{id} [delete]
 func (h *Handler) DeleteReview() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		QueryId := chi.URLParam(request, "id")
