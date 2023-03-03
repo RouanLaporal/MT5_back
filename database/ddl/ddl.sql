@@ -151,4 +151,4 @@ INSERT INTO benefits (id_shop, name, description, duration, price) VALUES
 */
 
 
-SELECT shops.id_shop, shops.name, address, zip_code, city, latitude, longitude, country, phone, email, description, ST_Distance_Sphere( point ("48.8534951", "2.3483915"), point(longitude, latitude)) * .000621371192 AS distance_in_miles FROM shops INNER JOIN shop_kind ON shops.id_shop = shop_kind.id_shop INNER JOIN kinds  ON shop_kind.id_kind = kinds.id_kind WHERE kinds.name = "Coiffeurs" having distance_in_miles <= 15 order by distance_in_miles asc
+SELECT shops.id_shop, shops.name, address, zip_code, city, latitude, longitude, country, phone, email, description, ST_Distance_Sphere( point ("2.3483915","48.8534951"), point(longitude, latitude)) * .000621371192 AS distance_in_miles FROM shops INNER JOIN shop_kind ON shops.id_shop = shop_kind.id_shop INNER JOIN kinds  ON shop_kind.id_kind = kinds.id_kind WHERE kinds.name = "Coiffeurs" having distance_in_miles <= 15 order by distance_in_miles asc
