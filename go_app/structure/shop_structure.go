@@ -25,13 +25,13 @@ type NewShop struct {
 }
 
 type NewShopAndUser struct {
-	ID      int    `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	ZipCode string `json:"zip"`
-	City    string `json:"city"`
-	// Lat         string `json:"lat"`
-	// Long        string `json:"long"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Address     string `json:"address"`
+	ZipCode     string `json:"zip"`
+	City        string `json:"city"`
+	Lat         string `json:"lat"`
+	Long        string `json:"long"`
 	Country     string `json:"country"`
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
@@ -47,13 +47,13 @@ type NewShopAndUser struct {
 }
 
 type Shop struct {
-	ID      int    `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	ZipCode string `json:"zip"`
-	City    string `json:"city"`
-	// Lat         string `json:"lat"`
-	// Long        string `json:"long"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Address     string `json:"address"`
+	ZipCode     string `json:"zip"`
+	City        string `json:"city"`
+	Lat         string `json:"lat"`
+	Long        string `json:"long"`
 	Country     string `json:"country"`
 	Phone       string `json:"phone"`
 	Email       string `json:"email"`
@@ -80,11 +80,8 @@ type ShopRO struct {
 	Openings    []ShowOpening `json:"opening"`
 	Benefits    []BenefitRO   `json:"benefits"`
 	Reviews     []ReviewRO    `json:"reviews"`
-	// Lat         string `json:"lat"`
-	// Long        string `json:"long"`
-	// CollaboratorName   string `json:"collaborator_name"`
-	// CollaboratorPhone  string `json:"collaborator_phone"`
-	// CollaboratorEmail  string `json:"collaborator_email"`
+	Lat         string        `json:"lat"`
+	Long        string        `json:"long"`
 }
 
 type ShopsNearReturn struct {
