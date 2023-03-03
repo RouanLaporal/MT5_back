@@ -106,8 +106,8 @@ CREATE TABLE IF NOT EXISTS reservations (
 
 /* 
 INSERT INTO users (firstName, lastName, phone, email, password, role) VALUES
-('Paul', 'Smith', '0737485936', 'paul.smith@gmail.com', 'password', 'admin'),
-('Marie', 'Dubois', '0737482875', 'marie.dubois@gmail.com', 'password', 'admin'),
+('Paul', 'Smith', '0737485936', 'paul.smith@gmail.com', 'password', 'trader'),
+('Marie', 'Dubois', '0737482875', 'marie.dubois@gmail.com', 'password', 'trader'),
 ('John', 'Doe', '0634094877', 'john.doe@gmail.com', 'password', 'customer'),
 ('Carl', 'Johnson', '0648627756', 'carl.johnson@gmail.com', 'password', 'customer'),
 ('Sophie', 'Laverre', '0648107569', 'sophie.laverre@gmail.com', 'password', 'customer');
@@ -150,6 +150,4 @@ INSERT INTO benefits (id_shop, name, description, duration, price) VALUES
 (1, 'Contours', "Contours d'une coupe de cheveux seulement", '5 minutes', '5');
 */
 
-SELECT shops.id_shop, shops.name, zip_code, city, country, phone, email, shops.description, id_user, id_benefit, benefits.name, benefits.duration, benefits.description  FROM shops RIGHT JOIN benefits ON shops.id_shop = benefits.id_shop
-where shops.id_shop = 8;
 
