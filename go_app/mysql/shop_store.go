@@ -29,13 +29,13 @@ func (shop_store *ShopStore) AddShopAndUser(new_shop structure.NewShopAndUser) e
 		return err
 	}
 	res, err = shop_store.DB.Exec(
-		"INSERT INTO shops (name, zip_code, city,address, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO shops (name, zip_code, city,address,latitude, longitude, country, phone, email, description, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		new_shop.Name,
 		new_shop.ZipCode,
 		new_shop.City,
 		new_shop.Address,
-		// new_shop.Lat,
-		// new_shop.Long,
+		new_shop.Lat,
+		new_shop.Long,
 		new_shop.Country,
 		new_shop.Phone,
 		new_shop.Email,
